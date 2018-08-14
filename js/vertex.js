@@ -57,7 +57,7 @@ Vertex.prototype.addNeighbor = function(vertex) {
 	}
 }
 
-Vertex.prototype.removeNeighbor = function(vertex) {
+Vertex.prototype.removeNeighbors = function(vertex) {
 	for (var i = 0; i < this.neighbors.length; i++) {
 		if (this.neighbors[i].equals(vertex)) {
 			this.neighbors.splice(i, 1);

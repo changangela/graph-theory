@@ -15,12 +15,12 @@ Graph.prototype.addEdge = function(v1, v2) {
 
 
 Graph.prototype.removeVertex = function(vertex) {
-	for (var i = 0; i < this.vertices.length; i++) {
+	for (var i = this.vertices.length - 1; i >= 0; i--) {
 		if (this.vertices[i].equals(vertex)) {
 			this.vertices.splice(i, 1);
 		} else {
-			this.vertices.removeNeighbor(vertex);
-		}
+			this.vertices[i].removeNeighbors(vertex);
+		}		
 	}
 }
 
