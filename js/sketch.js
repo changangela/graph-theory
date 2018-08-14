@@ -3,64 +3,66 @@ const CANVAS_Y = 500;
 const FRAME_RATE = 10;
 const BACKGROUND_COLOR = 240;
 
-var vertices = []
+var graph = new Graph();
+var graphController = new GraphController(graph);
 
 function setup() {
     createCanvas(CANVAS_X, CANVAS_Y);
     ellipseMode(RADIUS);
 }
 
-function draw() {
-    background(BACKGROUND_COLOR);
-	for (var i = 0; i < vertices.length; i++) {
-		// might not want to draw vertices in here
-		const vertex = vertices[i];
-		fill(vertex.color);
-		ellipse(vertex.x, vertex.y, vertex.radius, vertex.radius);
-	}
+function drawEdge(edge) {
+    line(edge.v1.x, edge.v1.y, edge.v2.x, edge.v2.y);
 }
 
-function keyPressed() {
+function drawVertex(vertex) {
+	fill(vertex.color);
+	ellipse(vertex.x, vertex.y, vertex.radius, vertex.radius);
+}
+
+function draw() {
+    background(BACKGROUND_COLOR);
+
+    // draw edges
+
+    for (var i = 0; i < graph.edges.length; i++) {
+    	drawEdge(graph.edges[i]);
+    }
+
+    // draw vertices
+	for (var i = 0; i < graph.vertices.length; i++) {
+		drawVertex(graph.vertices[i]);
+	}
 }
 
 function mousePressed() {
-	var target = null;
-	var minDistance = CANVAS_X * CANVAS_Y;
 
-	for (var i = 0; i < vertices.length; i++) {
-		const vertex = vertices[i], distance = dist(mouseX, mouseY, vertex.x, vertex.y);
-		if (distance < vertex.radius && distance < minDistance) {
-			minDistance = distance;
-			target = i;
-		}
-		vertex.disable();
+	if (keyIsPressed && keyCode == SHIFT) {
+		graphController.addEdge(mouseX, mouseY);
+	} else {
+		const target = graphController.selectVertex(mouseX, mouseY);
+				
+		if (mouseButton == LEFT) {
+			if (target != null) {
+				graphController.toggleVertex(target);
+			} else {
+				graphController.addVertex(mouseX, mouseY);
+			}
+
+	  	} else if (mouseButton == RIGHT) {
+	  		if (target != null) {
+	  			graphController.removeVertex(target);
+	  		}
+	  	}
 	}
-
-	if (mouseButton == LEFT) {
-		if (target != null) {
-			vertices[target].toggle();
-		} else {
-			vertices.push(new Vertex(mouseX, mouseY));	
-		}
-
-  	} else if (mouseButton == RIGHT) {
-  		if (target != null) {
-  			vertices.splice(target, 1);
-  		}
-  	}
 
   	return false;
 }
 
 function mouseDragged() {
 	if (mouseButton == LEFT) {
-		for (var i = 0; i < vertices.length; i++) {
-			var vertex = vertices[i];
-			if (vertex.active) {
-				vertex.x = mouseX;
-				vertex.y = mouseY;
-				break;
-			}
-		}
+		graphController.moveVertex(mouseX, mouseY);
 	}
+
+	return false;
 }

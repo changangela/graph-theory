@@ -31,3 +31,11 @@ Vertex.prototype.disable = function() {
 		this.toggle();
 	}
 }
+
+Vertex.prototype.equals = function(vertex) {
+	return this == vertex;
+}
+
+Vertex.prototype.isActive = function() {
+	return this.active;
+}
