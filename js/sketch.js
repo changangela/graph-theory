@@ -11,8 +11,8 @@ function setup() {
     ellipseMode(RADIUS);
 }
 
-function drawEdge(edge) {
-    line(edge.v1.x, edge.v1.y, edge.v2.x, edge.v2.y);
+function drawEdge(v1, v2) {
+    line(v1.x, v1.y, v2.x, v2.y);
 }
 
 function drawVertex(vertex) {
@@ -22,11 +22,12 @@ function drawVertex(vertex) {
 
 function draw() {
     background(BACKGROUND_COLOR);
-
     // draw edges
 
-    for (var i = 0; i < graph.edges.length; i++) {
-    	drawEdge(graph.edges[i]);
+    for (var i = 0; i < graph.vertices.length; i++) {
+    	for (var j = 0; j < graph.vertices[i].neighbors.length; j++) {
+    		drawEdge(graph.vertices[i], graph.vertices[i].neighbors[j]);
+    	}
     }
 
     // draw vertices
@@ -39,9 +40,12 @@ function mousePressed() {
 
 	if (keyIsPressed && keyCode == SHIFT) {
 		graphController.addEdge(mouseX, mouseY);
+		graphController.disableIfNotTarget(null);
 	} else {
 		const target = graphController.selectVertex(mouseX, mouseY);
-				
+		
+		graphController.disableIfNotTarget(target);
+
 		if (mouseButton == LEFT) {
 			if (target != null) {
 				graphController.toggleVertex(target);

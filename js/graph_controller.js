@@ -4,14 +4,8 @@ function GraphController(graph) {
 
 GraphController.prototype.addEdge = function(x, y) {
 	const target = this.selectVertex(x, y);
-	if (target != null) {
-		const active = this.graph.activeVertex();
-		if (active != null) {
-			this.graph.addEdge(new Edge(active, target));
-		}
-	}
-
-	this.disableVertices();
+	const active = this.graph.activeVertex();
+	this.graph.addEdge(active, target);
 }
 
 GraphController.prototype.selectVertex = function(x, y) {
@@ -29,12 +23,14 @@ GraphController.prototype.selectVertex = function(x, y) {
 	return target;
 }
 
-GraphController.prototype.disableVertices = function(x, y) {
-	this.graph.disableVertices();
+GraphController.prototype.disableIfNotTarget = function(target) {
+	const active = this.graph.activeVertex();
+	if (active != null && !active.equals(target)) {
+		active.disable();
+	}
 }
 
 GraphController.prototype.addVertex = function(x, y) {
-	this.disableVertices();
 	this.graph.addVertex(new Vertex(x, y));
 }
 
@@ -43,7 +39,6 @@ GraphController.prototype.toggleVertex = function(vertex) {
 }
 
 GraphController.prototype.removeVertex = function(vertex) {
-	this.disableVertices();
 	this.graph.removeVertex(vertex);
 }
 

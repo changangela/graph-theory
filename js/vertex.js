@@ -14,6 +14,8 @@ function Vertex (x, y) {
 	this.x = x;
 	this.y = y;
 	this.active = false;
+
+	this.neighbors = [];
 }
 
 Vertex.prototype.toggle = function() {
@@ -38,4 +40,31 @@ Vertex.prototype.equals = function(vertex) {
 
 Vertex.prototype.isActive = function() {
 	return this.active;
+}
+
+Vertex.prototype.hasNeighbor = function(vertex) {
+	for (var i = 0; i < this.neighbors.length; i++) {
+		if (this.neighbors[i].equals(vertex)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+Vertex.prototype.addNeighbor = function(vertex) {
+	if (!this.hasNeighbor(vertex)) {
+		this.neighbors.push(vertex);
+	}
+}
+
+Vertex.prototype.removeNeighbor = function(vertex) {
+	for (var i = 0; i < this.neighbors.length; i++) {
+		if (this.neighbors[i].equals(vertex)) {
+			this.neighbors.splice(i, 1);
+		}
+	}
+}
+
+Vertex.prototype.numNeighbors = function() {
+	return this.neighbors.length;
 }
