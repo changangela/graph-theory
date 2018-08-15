@@ -61,6 +61,6 @@ Bipartite.prototype.solve = function() {
 	})
 
 	setB.forEach(function(vertex) {
-		vertex.color = GRAPH_COLORS.BLUE;
+		vertex.color = GRAPH_COLORS.YELLOW;
 	})
 }

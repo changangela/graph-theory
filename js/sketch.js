@@ -65,7 +65,9 @@ function mousePressed() {
 		if (keyIsPressed && keyCode == SHIFT) {
 			const target = graphController.addEdge(mouseX, mouseY);
 			graphController.disableIfNotTarget(null);
-			target.toggle();
+			if (target != null) {
+				target.toggle();
+			}
 		} else {
 			const target = graphController.selectVertex(mouseX, mouseY);
 			graphController.disableIfNotTarget(target);
