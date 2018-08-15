@@ -63,7 +63,7 @@ Vertex.prototype.removeNeighbors = function(vertex) {
 	}
 }
 
-Vertex.prototype.numNeighbors = function() {
+Vertex.prototype.degrees = function() {
 	return this.neighbors.length;
 }
 

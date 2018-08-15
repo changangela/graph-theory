@@ -40,7 +40,7 @@ Bipartite.prototype.solve = function() {
 		let current = queue.shift();
 		let thisSet = setA.has(current) ? setA : setB, otherSet = setA.has(current) ? setB : setA; 
 
-		for (let i = 0; i < current.numNeighbors(); i++) {
+		for (let i = 0; i < current.neighbors.length; i++) {
 			if (thisSet.has(current.neighbors[i])) {
 				impossible(current.neighbors[i], current, parent, this.graph.vertices);
 				return false;

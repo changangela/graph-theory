@@ -6,6 +6,7 @@ const BACKGROUND_COLOR = '#f2f2f2';
 const KEY_MAPPING = {
 	BIPARTITE: 66, // 'b'
 	NORMAL: 78, // 'n'
+	DEGREES: 68, // 'd'
 }
 
 let graph = new Graph();
@@ -17,6 +18,7 @@ function setup() {
     let canvas = createCanvas(CANVAS_X, CANVAS_Y);
     canvas.parent('playground');
     ellipseMode(RADIUS);
+    textAlign(CENTER, CENTER);
     textFont('Ubuntu', 16);
 }
 
@@ -27,6 +29,11 @@ function drawEdge(v1, v2) {
 function drawVertex(vertex) {
 	fill(vertex.color);
 	ellipse(vertex.x, vertex.y, vertex.radius, vertex.radius);
+
+	if (graph.mode == GRAPH_MODE.DEGREES) {
+		fill('#000000');
+		text(vertex.degrees(), vertex.x, vertex.y);
+	}
 }
 
 function drawMode() {
@@ -56,6 +63,8 @@ function keyPressed() {
 		graphController.bipartite();
 	} else if (keyCode == KEY_MAPPING.NORMAL) {
 		graphController.normal();
+	} else if (keyCode == KEY_MAPPING.DEGREES) {
+		graphController.degrees();
 	}
 
 }

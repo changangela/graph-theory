@@ -1,6 +1,7 @@
 const GRAPH_MODE = {
 	NORMAL: 'BUILDER',
 	BIPARTITE: 'BIPARTITE',
+	DEGREES: 'DEGREES',
 }
 
 function Graph() {
@@ -21,7 +22,7 @@ Graph.prototype.addEdge = function(v1, v2) {
 
 
 Graph.prototype.removeVertex = function(vertex) {
-	for (var i = this.vertices.length - 1; i >= 0; i--) {
+	for (let i = this.vertices.length - 1; i >= 0; i--) {
 		if (this.vertices[i].equals(vertex)) {
 			this.vertices.splice(i, 1);
 		} else {
@@ -31,7 +32,7 @@ Graph.prototype.removeVertex = function(vertex) {
 }
 
 Graph.prototype.activeVertex = function() {
-	for (var i = 0; i < this.vertices.length; i++) {
+	for (let i = 0; i < this.vertices.length; i++) {
 		if (this.vertices[i].isActive()) {
 			return this.vertices[i];
 		}
@@ -41,15 +42,15 @@ Graph.prototype.activeVertex = function() {
 }
 
 Graph.prototype.disableVertices = function() {
-	for (var i = 0; i < this.vertices.length; i++) {
+	for (let i = 0; i < this.vertices.length; i++) {
 		this.vertices[i].disable();
 	}
 }
 
 Graph.prototype.numEdges = function() {
-	var ret = 0;
-	for (var i = 0; i < this.vertices.length; i++) {
-		ret += this.vertices[i].numNeighbors();
+	let ret = 0;
+	for (let i = 0; i < this.vertices.length; i++) {
+		ret += this.vertices[i].degrees();
 	}
 	return ret / 2;
 }
@@ -71,8 +72,8 @@ Graph.prototype.normal = function() {
 
 Graph.prototype.components = function() {
 	// returns a list of vertices, one from each component of the graph
-	var visited = new Set();
-	var components = [];
+	let visited = new Set();
+	let components = [];
 
 	function bfs(vertex, visited) {
 		if (visited.has(vertex)) {
@@ -81,12 +82,12 @@ Graph.prototype.components = function() {
 
 		visited.add(vertex);
 
-		for (var i = 0; i < vertex.neighbors.length; i++) {
+		for (let i = 0; i < vertex.neighbors.length; i++) {
 			bfs(vertex.neighbors[i], visited);
 		}
 	}
 
-	for (var i = 0; i < this.vertices.length; i++) {
+	for (let i = 0; i < this.vertices.length; i++) {
 		if (!visited.has(this.vertices[i])) {
 			components.push(this.vertices[i]);
 			bfs(this.vertices[i], visited);
@@ -94,4 +95,8 @@ Graph.prototype.components = function() {
 	}
 
 	return components;
+}
+
+Graph.prototype.degrees = function() {
+	this.mode = GRAPH_MODE.DEGREES;
 }

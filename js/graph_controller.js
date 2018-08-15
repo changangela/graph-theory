@@ -62,3 +62,7 @@ GraphController.prototype.bipartite = function() {
 GraphController.prototype.normal = function() {
 	this.graph.normal();
 }
+
+GraphController.prototype.degrees = function() {
+	this.graph.degrees();
+}
