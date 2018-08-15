@@ -18,7 +18,7 @@ function setup() {
     let canvas = createCanvas(CANVAS_X, CANVAS_Y);
     canvas.parent('playground');
     ellipseMode(RADIUS);
-    textAlign(CENTER, CENTER);
+
     textFont('Ubuntu', 16);
 }
 
@@ -31,6 +31,7 @@ function drawVertex(vertex) {
 	ellipse(vertex.x, vertex.y, vertex.radius, vertex.radius);
 
 	if (graph.mode == GRAPH_MODE.DEGREES) {
+	    textAlign(CENTER, CENTER);
 		fill('#000000');
 		text(vertex.degrees(), vertex.x, vertex.y);
 	}
@@ -38,7 +39,8 @@ function drawVertex(vertex) {
 
 function drawMode() {
 	fill('#000000');
-	text(graph.mode, 10, 10, 100, 120);
+    textAlign(LEFT, TOP);
+	text(graph.mode, 10, 10, 70, 20);
 }
 function draw() {
 	background(BACKGROUND_COLOR);
