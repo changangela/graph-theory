@@ -9,23 +9,28 @@ function Bipartite(graph) {
 	this.graph = graph;
 }
 
-Bipartite.prototype.solve = function() {
-	this.graph.disableEdges();
-	
-	function impossible(u, v, parent, vertices) {
-		for (var i = 0; i < vertices.length; ++i) {
-			vertices[i].color = GRAPH_COLORS.INVALID;
+Bipartite.prototype.solve = function() {	
+	function impossible(u, v, parent, graph) {
+		let cycle = [graph.getEdge(u, v)];
+
+		for (var i = 0; i < graph.vertices.length; ++i) {
+			graph.vertices[i].color = GRAPH_COLORS.INVALID;
 		}
 
 		while (u != v) {
 			u.color = GRAPH_COLORS.CYCLE;
 			v.color = GRAPH_COLORS.CYCLE;
+
+			cycle.push(graph.getEdge(u, parent[u.id]));
+			cycle.unshift(graph.getEdge(v, parent[v.id]));
+
 			u = parent[u.id];
 			v = parent[v.id];
 		}
 		u.color = GRAPH_COLORS.CYCLE;
 		v.color = GRAPH_COLORS.CYCLE;
 
+		graph.setCircuit(new Circuit(cycle));
 	}
 
 	let setA = new Set(), setB = new Set();
@@ -43,7 +48,7 @@ Bipartite.prototype.solve = function() {
 
 		for (let i = 0; i < current.neighbors.length; ++i) {
 			if (thisSet.has(current.neighbors[i])) {
-				impossible(current.neighbors[i], current, parent, this.graph.vertices);
+				impossible(current.neighbors[i], current, parent, this.graph);
 				return false;
 			} else {
 				if (!otherSet.has(current.neighbors[i])) {

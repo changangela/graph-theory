@@ -24,6 +24,15 @@ Graph.prototype.addEdge = function(u, v) {
 	}
 }
 
+Graph.prototype.getEdge = function(u, v) {
+	for (let i = 0; i < this.edges.length; ++i) {
+		if (this.edges[i].contains(u) && this.edges[i].contains(v)) {
+			return this.edges[i];
+		}
+	}
+	return null;
+}
+
 
 Graph.prototype.removeVertex = function(vertex) {
 	for (let i = this.vertices.length - 1; i >= 0; i--) {
@@ -104,12 +113,14 @@ Graph.prototype.numVertices = function() {
 
 Graph.prototype.bipartite = function() {
 	this.mode = GRAPH_MODE.BIPARTITE;
+	this.circuit = null;
 	const bipartiteSolver = new Bipartite(graph);
 	bipartiteSolver.solve();
 }
 
 Graph.prototype.normal = function() {
 	this.mode = GRAPH_MODE.NORMAL;
+	this.circuit = null;
 	this.disableVertices();
 }
 
@@ -142,4 +153,13 @@ Graph.prototype.components = function() {
 
 Graph.prototype.degrees = function() {
 	this.mode = GRAPH_MODE.DEGREES;
+	this.circuit = null;
+}
+
+Graph.prototype.setCircuit = function(circuit) {
+	this.circuit = circuit;
+}
+
+Graph.prototype.hasCircuit = function() {
+	return this.circuit;
 }
