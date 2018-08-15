@@ -1,7 +1,3 @@
-const GRAPH_MODE = {
-	NORMAL: 1,
-	BIPARTITE: 2,
-}
 
 function GraphController(graph) {
 	this.graph = graph;
@@ -12,13 +8,14 @@ GraphController.prototype.addEdge = function(x, y) {
 	const target = this.selectVertex(x, y);
 	const active = this.graph.activeVertex();
 	this.graph.addEdge(active, target);
+	return target;
 }
 
 GraphController.prototype.selectVertex = function(x, y) {
-	var minDistance = Number.MAX_SAFE_INTEGER;
-	var target = null;
+	let minDistance = Number.MAX_SAFE_INTEGER;
+	let target = null;
 
-	for (var i = 0; i < this.graph.vertices.length; i++) {
+	for (let i = 0; i < this.graph.vertices.length; i++) {
 		const vertex = this.graph.vertices[i], distance = dist(x, y, vertex.x, vertex.y);
 		if (distance < vertex.radius && distance < minDistance) {
 			minDistance = distance;
@@ -38,6 +35,8 @@ GraphController.prototype.disableIfNotTarget = function(target) {
 
 GraphController.prototype.addVertex = function(x, y) {
 	this.graph.addVertex(new Vertex(x, y));
+
+	let vertex = new Vertex(x, y);
 }
 
 GraphController.prototype.toggleVertex = function(vertex) {
@@ -56,12 +55,10 @@ GraphController.prototype.moveVertex = function(x, y) {
 	}
 }
 
-GraphController.prototype.toggleBipartite = function() {
-	if (this.mode === GRAPH_MODE.BIPARTITE) {
-		this.mode = GRAPH_MODE.NORMAL;
-		this.graph.normal();
-	} else {
-		this.mode = GRAPH_MODE.BIPARTITE;
-		this.graph.bipartite();
-	}
+GraphController.prototype.bipartite = function() {
+	this.graph.bipartite();
+}
+
+GraphController.prototype.normal = function() {
+	this.graph.normal();
 }

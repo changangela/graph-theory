@@ -1,18 +1,23 @@
 const CANVAS_X = 750;
 const CANVAS_Y = 500;
 const FRAME_RATE = 10;
-const BACKGROUND_COLOR = 240;
+const BACKGROUND_COLOR = '#f2f2f2';
 
 const KEY_MAPPING = {
 	BIPARTITE: 66, // 'b'
+	NORMAL: 78, // 'n'
 }
 
-var graph = new Graph();
-var graphController = new GraphController(graph);
+let graph = new Graph();
+let graphController = new GraphController(graph);
+let messageObj = document.getElementById("message");
 
 function setup() {
-    createCanvas(CANVAS_X, CANVAS_Y);
+	// messageObj.innerHTML = MESSAGE;
+    let canvas = createCanvas(CANVAS_X, CANVAS_Y);
+    canvas.parent('playground');
     ellipseMode(RADIUS);
+    textFont('Ubuntu', 16);
 }
 
 function drawEdge(v1, v2) {
@@ -24,59 +29,70 @@ function drawVertex(vertex) {
 	ellipse(vertex.x, vertex.y, vertex.radius, vertex.radius);
 }
 
+function drawMode() {
+	fill('#000000');
+	text(graph.mode, 10, 10, 100, 120);
+}
 function draw() {
-    background(BACKGROUND_COLOR);
+	background(BACKGROUND_COLOR);
+	drawMode();
+
     // draw edges
 
-    for (var i = 0; i < graph.vertices.length; i++) {
-    	for (var j = 0; j < graph.vertices[i].neighbors.length; j++) {
+    for (let i = 0; i < graph.vertices.length; i++) {
+    	for (let j = 0; j < graph.vertices[i].neighbors.length; j++) {
     		drawEdge(graph.vertices[i], graph.vertices[i].neighbors[j]);
     	}
     }
 
     // draw vertices
-	for (var i = 0; i < graph.vertices.length; i++) {
+	for (let i = 0; i < graph.vertices.length; i++) {
 		drawVertex(graph.vertices[i]);
 	}
 }
 
 function keyPressed() {
 	if (keyCode == KEY_MAPPING.BIPARTITE) {
-		graphController.toggleBipartite();
+		graphController.bipartite();
+	} else if (keyCode == KEY_MAPPING.NORMAL) {
+		graphController.normal();
 	}
 
 }
 
 function mousePressed() {
+	if (graph.mode === GRAPH_MODE.NORMAL) {
+		if (keyIsPressed && keyCode == SHIFT) {
+			const target = graphController.addEdge(mouseX, mouseY);
+			graphController.disableIfNotTarget(null);
+			target.toggle();
+		} else {
+			const target = graphController.selectVertex(mouseX, mouseY);
+			graphController.disableIfNotTarget(target);
 
-	if (keyIsPressed && keyCode == SHIFT) {
-		graphController.addEdge(mouseX, mouseY);
-		graphController.disableIfNotTarget(null);
-	} else {
-		const target = graphController.selectVertex(mouseX, mouseY);
-		
-		graphController.disableIfNotTarget(target);
+			if (mouseButton == LEFT) {
+				if (target != null) {
+					graphController.toggleVertex(target);
+				} else {
+					graphController.addVertex(mouseX, mouseY);
+				}
 
-		if (mouseButton == LEFT) {
-			if (target != null) {
-				graphController.toggleVertex(target);
-			} else {
-				graphController.addVertex(mouseX, mouseY);
-			}
-
-	  	} else if (mouseButton == RIGHT) {
-	  		if (target != null) {
-	  			graphController.removeVertex(target);
-	  		}
-	  	}
+		  	} else if (mouseButton == RIGHT) {
+		  		if (target != null) {
+		  			graphController.removeVertex(target);
+		  		}
+		  	}
+		}
 	}
 
   	return false;
 }
 
 function mouseDragged() {
-	if (mouseButton == LEFT) {
-		graphController.moveVertex(mouseX, mouseY);
+	if (graph.mode === GRAPH_MODE.NORMAL) {
+		if (mouseButton == LEFT) {
+			graphController.moveVertex(mouseX, mouseY);
+		}
 	}
 
 	return false;

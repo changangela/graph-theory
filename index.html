@@ -39,9 +39,26 @@
 						</li>
 					</ul>
 				</div>
+
 			</div>
-			<!-- sketch goes here -->
 		</nav>
+		<div class = "container-fluid instructions">
+			<div class = "row">
+				<div>
+					<p>
+						Left click on canvas to create vertex. Left click on vertex to select and drag. Right click on vertex to delete. To add an edge, select a source vertex, hold down SHIFT, and select a destination vertex. To restart, press F5.
+					</p>
+					<p>
+						<b>Modes</b>: builder (n), bipartite (b)
+					</p>
+				</div>
+				<p id = "message">
+				</p>
+			</div>
+			<div class = "row" id = "playground">
+				<!-- sketch goes here -->
+			</div>
+		</div>
 		<script src="js/main.js" type="text/javascript"></script>
 		<script src="js/vertex.js" type="text/javascript"></script>
 		<script src="js/graph.js" type="text/javascript"></script>

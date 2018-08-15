@@ -1,12 +1,22 @@
 html, body {
-	font-family: 'Ubuntu light', sans-serif;
+	font-family: 'Ubuntu', sans-serif;
 	overflow-x: hidden;
+	
 	height: 100%;
 }
 
 body, .container, .row {
-	margin: 0;
+	align-items: center;
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	margin: 0;
+}
+
+.instructions {
+	/*background-color: #ccffcc;*/
+
+	margin-top: 50px;
+
+	/*height: 100px;*/
+	width: 750px;
 }

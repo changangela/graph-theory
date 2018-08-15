@@ -1,5 +1,11 @@
+const GRAPH_MODE = {
+	NORMAL: 'BUILDER',
+	BIPARTITE: 'BIPARTITE',
+}
+
 function Graph() {
 	this.vertices = [];
+	this.mode = GRAPH_MODE.NORMAL;
 }
 
 Graph.prototype.addVertex = function(vertex) {
@@ -53,10 +59,39 @@ Graph.prototype.numVertices = function() {
 }
 
 Graph.prototype.bipartite = function() {
+	this.mode = GRAPH_MODE.BIPARTITE;
 	const bipartiteSolver = new Bipartite(graph);
 	bipartiteSolver.solve();
 }
 
 Graph.prototype.normal = function() {
+	this.mode = GRAPH_MODE.NORMAL;
 	this.disableVertices();
+}
+
+Graph.prototype.components = function() {
+	// returns a list of vertices, one from each component of the graph
+	var visited = new Set();
+	var components = [];
+
+	function bfs(vertex, visited) {
+		if (visited.has(vertex)) {
+			return;
+		}
+
+		visited.add(vertex);
+
+		for (var i = 0; i < vertex.neighbors.length; i++) {
+			bfs(vertex.neighbors[i], visited);
+		}
+	}
+
+	for (var i = 0; i < this.vertices.length; i++) {
+		if (!visited.has(this.vertices[i])) {
+			components.push(this.vertices[i]);
+			bfs(this.vertices[i], visited);
+		}
+	}
+
+	return components;
 }

@@ -12,6 +12,7 @@ function Vertex (x, y) {
 	this.x = x;
 	this.y = y;
 	this.active = false;
+	this.id = Vertex.uniqueId();
 
 	this.neighbors = [];
 }
@@ -40,7 +41,7 @@ Vertex.prototype.isActive = function() {
 }
 
 Vertex.prototype.hasNeighbor = function(vertex) {
-	for (var i = 0; i < this.neighbors.length; i++) {
+	for (let i = 0; i < this.neighbors.length; i++) {
 		if (this.neighbors[i].equals(vertex)) {
 			return true;
 		}
@@ -55,7 +56,7 @@ Vertex.prototype.addNeighbor = function(vertex) {
 }
 
 Vertex.prototype.removeNeighbors = function(vertex) {
-	for (var i = 0; i < this.neighbors.length; i++) {
+	for (let i = 0; i < this.neighbors.length; i++) {
 		if (this.neighbors[i].equals(vertex)) {
 			this.neighbors.splice(i, 1);
 		}
@@ -65,3 +66,12 @@ Vertex.prototype.removeNeighbors = function(vertex) {
 Vertex.prototype.numNeighbors = function() {
 	return this.neighbors.length;
 }
+
+function makeIdFactory() {
+    let i = 0;
+    return function() {
+        return i++;
+    }
+}
+
+Vertex.uniqueId = makeIdFactory();

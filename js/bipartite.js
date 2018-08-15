@@ -1,6 +1,8 @@
 GRAPH_COLORS = {
 	RED: '#ffffcc',
-	BLUE: '#ffccff',
+	YELLOW: '#ffccff',
+	INVALID: '#cccccc',
+	CYCLE: '#ccffff',
 }
 
 function Bipartite(graph) {
@@ -8,25 +10,45 @@ function Bipartite(graph) {
 }
 
 Bipartite.prototype.solve = function() {
-	var setA = new Set(), setB = new Set();
 
-	var queue = [];
-	if (graph.numVertices() > 0) {
-		setA.add(graph.vertices[0]);
-		queue.push(graph.vertices[0]);
+	function impossible(u, v, parent, vertices) {
+		for (var i = 0; i < vertices.length; i++) {
+			vertices[i].color = GRAPH_COLORS.INVALID;
+		}
+
+		while (u != v) {
+			u.color = GRAPH_COLORS.CYCLE;
+			v.color = GRAPH_COLORS.CYCLE;
+			u = parent[u.id];
+			v = parent[v.id];
+		}
+		u.color = GRAPH_COLORS.CYCLE;
+		v.color = GRAPH_COLORS.CYCLE;
+
+	}
+
+	let setA = new Set(), setB = new Set();
+
+	let queue = graph.components(), parent = {};
+	
+	for (let i = 0; i < queue.length; i++) {
+		setA.add(queue[i]);
+		parent[queue[i].id] = null;
 	}
 
 	while (queue.length != 0) {
-		var current  = queue.shift();
-		var thisSet = setA.has(current) ? setA : setB, otherSet = setA.has(current) ? setB : setA; 
+		let current = queue.shift();
+		let thisSet = setA.has(current) ? setA : setB, otherSet = setA.has(current) ? setB : setA; 
 
-		for (var i = 0; i < current.numNeighbors(); i++) {
+		for (let i = 0; i < current.numNeighbors(); i++) {
 			if (thisSet.has(current.neighbors[i])) {
+				impossible(current.neighbors[i], current, parent, this.graph.vertices);
 				return false;
 			} else {
 				if (!otherSet.has(current.neighbors[i])) {
 					otherSet.add(current.neighbors[i]);
 					queue.push(current.neighbors[i]);
+					parent[current.neighbors[i].id] = current;
 				}
 			}
 		}
