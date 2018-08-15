@@ -3,6 +3,8 @@ const CANVAS_Y = 500;
 const FRAME_RATE = 10;
 const BACKGROUND_COLOR = '#f2f2f2';
 
+const LIGHT_STROKE = 1, HIGHLIGHT_STROKE = 10, HEAVY_STROKE = 2;
+
 const KEY_MAPPING = {
 	BIPARTITE: 66, // 'b'
 	NORMAL: 78, // 'n'
@@ -19,20 +21,30 @@ function setup() {
     canvas.parent('playground');
     ellipseMode(RADIUS);
 
-    textFont('Ubuntu', 16);
+    textFont('Ubuntu', 16, 20);
 }
 
-function drawEdge(v1, v2) {
-    line(v1.x, v1.y, v2.x, v2.y);
+function drawEdge(edge) {
+	if (edge.active) {
+		strokeWeight(HIGHLIGHT_STROKE);
+		stroke(EDGE_COLORS.ACTIVE);
+	    line(edge.u.x, edge.u.y, edge.v.x, edge.v.y);
+	}
+
+	strokeWeight(LIGHT_STROKE);
+	stroke(EDGE_COLORS.NORMAL);
+    line(edge.u.x, edge.u.y, edge.v.x, edge.v.y);
 }
 
 function drawVertex(vertex) {
+	strokeWeight(LIGHT_STROKE);
+
 	fill(vertex.color);
 	ellipse(vertex.x, vertex.y, vertex.radius, vertex.radius);
 
 	if (graph.mode == GRAPH_MODE.DEGREES) {
 	    textAlign(CENTER, CENTER);
-		fill('#000000');
+		fill('#000000').strokeWeight(0);
 		text(vertex.degrees(), vertex.x, vertex.y);
 	}
 }
@@ -47,15 +59,12 @@ function draw() {
 	drawMode();
 
     // draw edges
-
-    for (let i = 0; i < graph.vertices.length; i++) {
-    	for (let j = 0; j < graph.vertices[i].neighbors.length; j++) {
-    		drawEdge(graph.vertices[i], graph.vertices[i].neighbors[j]);
-    	}
+    for (let i = 0; i < graph.edges.length; ++i) {
+    	drawEdge(graph.edges[i]);
     }
 
     // draw vertices
-	for (let i = 0; i < graph.vertices.length; i++) {
+	for (let i = 0; i < graph.vertices.length; ++i) {
 		drawVertex(graph.vertices[i]);
 	}
 }
@@ -67,6 +76,9 @@ function keyPressed() {
 		graphController.normal();
 	} else if (keyCode == KEY_MAPPING.DEGREES) {
 		graphController.degrees();
+	} else if (keyCode == DELETE) {
+		graphController.removeVertex(graph.activeVertex());
+		graphController.removeEdge(graph.activeEdge());
 	}
 
 }
@@ -75,24 +87,38 @@ function mousePressed() {
 	if (graph.mode === GRAPH_MODE.NORMAL) {
 		if (keyIsPressed && keyCode == SHIFT) {
 			const target = graphController.addEdge(mouseX, mouseY);
-			graphController.disableIfNotTarget(null);
+			graphController.disableVertices(null);
+			graphController.disableEdges(null);
+			
 			if (target != null) {
 				target.toggle();
 			}
+		
 		} else {
-			const target = graphController.selectVertex(mouseX, mouseY);
-			graphController.disableIfNotTarget(target);
+			const targetVertex = graphController.selectVertex(mouseX, mouseY);
+			const targetEdge = (targetVertex != null) ? null : graphController.selectedEdge(mouseX, mouseY);
+			graphController.disableVertices(targetVertex);
+			graphController.disableEdges(targetEdge);
 
 			if (mouseButton == LEFT) {
-				if (target != null) {
-					graphController.toggleVertex(target);
+				if (targetVertex != null) {
+					graphController.toggleVertex(targetVertex);
 				} else {
-					graphController.addVertex(mouseX, mouseY);
+					if (targetEdge == null) {
+						graphController.addVertex(mouseX, mouseY);
+					} else {
+						graphController.toggleEdge(targetEdge);
+					}
 				}
 
 		  	} else if (mouseButton == RIGHT) {
-		  		if (target != null) {
-		  			graphController.removeVertex(target);
+	  			// legacy code for deleting vertices
+		  		if (targetVertex != null) {
+		  			graphController.removeVertex(targetVertex);
+		  		} else {
+		  			if (targetEdge != null) {
+		  				graphController.removeEdge(targetEdge);
+		  			}
 		  		}
 		  	}
 		}

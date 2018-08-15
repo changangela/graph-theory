@@ -6,6 +6,7 @@ const GRAPH_MODE = {
 
 function Graph() {
 	this.vertices = [];
+	this.edges = []; // a bit redundant but makes it easier to store graphics information
 	this.mode = GRAPH_MODE.NORMAL;
 }
 
@@ -13,26 +14,50 @@ Graph.prototype.addVertex = function(vertex) {
 	this.vertices.push(vertex);
 }
 
-Graph.prototype.addEdge = function(v1, v2) {
-	if (v1 != null &&  v2 != null && !v1.equals(v2)) {
-		v1.addNeighbor(v2);
-		v2.addNeighbor(v1);
+Graph.prototype.addEdge = function(u, v) {
+	if (u != null &&  v != null && u != v) {
+		u.addNeighbor(v);
+		v.addNeighbor(u);
+		this.edges.push(new Edge(u, v));
 	}
 }
 
 
 Graph.prototype.removeVertex = function(vertex) {
 	for (let i = this.vertices.length - 1; i >= 0; i--) {
-		if (this.vertices[i].equals(vertex)) {
+		if (this.vertices[i] == vertex) {
 			this.vertices.splice(i, 1);
 		} else {
-			this.vertices[i].removeNeighbors(vertex);
+			this.vertices[i].removeNeighbor(vertex);
 		}		
+	}
+
+	// remove edges that contain this vertex
+	for (let i = this.edges.length - 1; i >= 0; i--) {
+		if (this.edges[i].contains(vertex)) {
+			this.edges.splice(i, 1);
+		}
+	}
+}
+
+Graph.prototype.removeEdge = function(edge) {
+	for (let i = this.edges.length - 1; i >= 0; --i) {
+		if (this.edges[i] == edge) {
+			this.edges.splice(i, 1);
+		}
+	}
+
+	for (let i = 0; i < this.vertices.length; ++i) {
+		if (this.vertices[i] == edge.u) {
+			this.vertices[i].removeNeighbor(edge.v);
+		} else if (this.vertices[i] == edge.v) {
+			this.vertices[i].removeNeighbor(edge.u);
+		}
 	}
 }
 
 Graph.prototype.activeVertex = function() {
-	for (let i = 0; i < this.vertices.length; i++) {
+	for (let i = 0; i < this.vertices.length; ++i) {
 		if (this.vertices[i].isActive()) {
 			return this.vertices[i];
 		}
@@ -41,15 +66,31 @@ Graph.prototype.activeVertex = function() {
 	return null;
 }
 
+Graph.prototype.activeEdge = function() {
+	for (let i = 0; i < this.edges.length; ++i) {
+		if (this.edges[i].isActive()) {
+			return this.edges[i];
+		}
+	}
+
+	return null;
+}
+
 Graph.prototype.disableVertices = function() {
-	for (let i = 0; i < this.vertices.length; i++) {
+	for (let i = 0; i < this.vertices.length; ++i) {
 		this.vertices[i].disable();
+	}
+}
+
+Graph.prototype.disableEdges = function() {
+	for (let i = 0; i < this.edges.length; ++i) {
+		this.edges[i].disable();
 	}
 }
 
 Graph.prototype.numEdges = function() {
 	let ret = 0;
-	for (let i = 0; i < this.vertices.length; i++) {
+	for (let i = 0; i < this.vertices.length; ++i) {
 		ret += this.vertices[i].degrees();
 	}
 	return ret / 2;
@@ -82,12 +123,12 @@ Graph.prototype.components = function() {
 
 		visited.add(vertex);
 
-		for (let i = 0; i < vertex.neighbors.length; i++) {
+		for (let i = 0; i < vertex.neighbors.length; ++i) {
 			bfs(vertex.neighbors[i], visited);
 		}
 	}
 
-	for (let i = 0; i < this.vertices.length; i++) {
+	for (let i = 0; i < this.vertices.length; ++i) {
 		if (!visited.has(this.vertices[i])) {
 			components.push(this.vertices[i]);
 			bfs(this.vertices[i], visited);

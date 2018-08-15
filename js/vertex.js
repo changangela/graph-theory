@@ -32,17 +32,13 @@ Vertex.prototype.disable = function() {
 	this.color = VERTEX_COLORS.NORMAL;
 }
 
-Vertex.prototype.equals = function(vertex) {
-	return this == vertex;
-}
-
 Vertex.prototype.isActive = function() {
 	return this.active;
 }
 
 Vertex.prototype.hasNeighbor = function(vertex) {
-	for (let i = 0; i < this.neighbors.length; i++) {
-		if (this.neighbors[i].equals(vertex)) {
+	for (let i = 0; i < this.neighbors.length; ++i) {
+		if (this.neighbors[i] == vertex) {
 			return true;
 		}
 	}
@@ -55,9 +51,9 @@ Vertex.prototype.addNeighbor = function(vertex) {
 	}
 }
 
-Vertex.prototype.removeNeighbors = function(vertex) {
-	for (let i = 0; i < this.neighbors.length; i++) {
-		if (this.neighbors[i].equals(vertex)) {
+Vertex.prototype.removeNeighbor = function(vertex) {
+	for (let i = 0; i < this.neighbors.length; ++i) {
+		if (this.neighbors[i] == vertex) {
 			this.neighbors.splice(i, 1);
 		}
 	}
@@ -70,7 +66,7 @@ Vertex.prototype.degrees = function() {
 function makeIdFactory() {
     let i = 0;
     return function() {
-        return i++;
+        return ++i;
     }
 }
 
