@@ -51,3 +51,12 @@ Graph.prototype.numEdges = function() {
 Graph.prototype.numVertices = function() {
 	return this.vertices.length;
 }
+
+Graph.prototype.bipartite = function() {
+	const bipartiteSolver = new Bipartite(graph);
+	bipartiteSolver.solve();
+}
+
+Graph.prototype.normal = function() {
+	this.disableVertices();
+}

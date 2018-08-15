@@ -3,6 +3,10 @@ const CANVAS_Y = 500;
 const FRAME_RATE = 10;
 const BACKGROUND_COLOR = 240;
 
+const KEY_MAPPING = {
+	BIPARTITE: 66, // 'b'
+}
+
 var graph = new Graph();
 var graphController = new GraphController(graph);
 
@@ -34,6 +38,13 @@ function draw() {
 	for (var i = 0; i < graph.vertices.length; i++) {
 		drawVertex(graph.vertices[i]);
 	}
+}
+
+function keyPressed() {
+	if (keyCode == KEY_MAPPING.BIPARTITE) {
+		graphController.toggleBipartite();
+	}
+
 }
 
 function mousePressed() {

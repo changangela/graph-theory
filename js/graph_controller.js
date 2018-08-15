@@ -1,5 +1,11 @@
+const GRAPH_MODE = {
+	NORMAL: 1,
+	BIPARTITE: 2,
+}
+
 function GraphController(graph) {
 	this.graph = graph;
+	this.mode = GRAPH_MODE.NORMAL;
 }
 
 GraphController.prototype.addEdge = function(x, y) {
@@ -47,5 +53,15 @@ GraphController.prototype.moveVertex = function(x, y) {
 	if (target != null) {
 		target.x = x;
 		target.y = y;
+	}
+}
+
+GraphController.prototype.toggleBipartite = function() {
+	if (this.mode === GRAPH_MODE.BIPARTITE) {
+		this.mode = GRAPH_MODE.NORMAL;
+		this.graph.normal();
+	} else {
+		this.mode = GRAPH_MODE.BIPARTITE;
+		this.graph.bipartite();
 	}
 }
