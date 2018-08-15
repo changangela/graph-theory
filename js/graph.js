@@ -8,6 +8,8 @@ function Graph() {
 	this.vertices = [];
 	this.edges = []; // a bit redundant but makes it easier to store graphics information
 	this.mode = GRAPH_MODE.NORMAL;
+
+	this.circuit = null;
 }
 
 Graph.prototype.addVertex = function(vertex) {
