@@ -13,6 +13,7 @@ function Vertex (x, y) {
 	this.y = y;
 	this.active = false;
 	this.id = Vertex.uniqueId();
+        console.log(this.id);
 
 	this.neighbors = [];
 }

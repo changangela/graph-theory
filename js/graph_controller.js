@@ -98,6 +98,10 @@ GraphController.prototype.bipartite = function() {
 	this.graph.bipartite();
 }
 
+GraphController.prototype.eulerian = function() {
+    this.graph.eulerian();
+}
+
 GraphController.prototype.normal = function() {
 	this.graph.normal();
 }

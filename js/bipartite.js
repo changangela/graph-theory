@@ -41,11 +41,10 @@ Bipartite.prototype.solve = function() {
 		setA.add(queue[i]);
 		parent[queue[i].id] = null;
 	}
-
 	while (queue.length != 0) {
 		let current = queue.shift();
 		let thisSet = setA.has(current) ? setA : setB, otherSet = setA.has(current) ? setB : setA; 
-
+                
 		for (let i = 0; i < current.neighbors.length; ++i) {
 			if (thisSet.has(current.neighbors[i])) {
 				impossible(current.neighbors[i], current, parent, this.graph);

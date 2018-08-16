@@ -2,6 +2,7 @@ const GRAPH_MODE = {
 	NORMAL: 'BUILDER',
 	BIPARTITE: 'BIPARTITE',
 	DEGREES: 'DEGREES',
+        EULERIAN: 'EULERIAN CYCLE'
 }
 
 function Graph() {
@@ -116,6 +117,20 @@ Graph.prototype.bipartite = function() {
 	this.circuit = null;
 	const bipartiteSolver = new Bipartite(graph);
 	bipartiteSolver.solve();
+
+}
+
+Graph.prototype.eulerian = function() {
+    this.mode = GRAPH_MODE.EULERIAN;
+    const circuitSolver = new CircuitSolver(graph);
+    let verticesOfCircuit = circuitSolver.solve();
+    let edgesOfCircuit = [];
+    for(let i = 0; i<verticesOfCircuit.length -1; ++i) {
+        edgesOfCircuit.push(this.getEdge(verticesOfCircuit[i], verticesOfCircuit[i+1]));
+    }
+    if(edgesOfCircuit.length > 0) {
+        this.setCircuit(new Circuit(edgesOfCircuit));
+    }
 }
 
 Graph.prototype.normal = function() {

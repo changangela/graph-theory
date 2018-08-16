@@ -19,5 +19,55 @@ CircuitSolver.prototype.solve = function() {
             nonZeroVertexDegreeComponents.push(currComp);
         }
     }
-    console.log(nonZeroVertexDegreeComponents);
+    
+    if(nonZeroVertexDegreeComponents.length > 1) {
+        return [];
+    }
+    else if (nonZeroVertexDegreeComponents.length == 0) {
+        return [];
+    }
+    
+    else {
+        function unvisitedEdgeVertex(circuit) {
+            for(let i = 0; i< circuit.length; ++i) {
+                if(circuit[i].neighbors.length > 0) {
+                    return [circuit[i]];
+                }
+            }
+            return [];
+        }
+        let start = nonZeroVertexDegreeComponents[0];
+        let circuit = [start];
+        for(let x = 0; x<vertices.length; ++x) {
+            console.log(vertices[x].degrees());
+            if(vertices[x].degrees() % 2 == 1) {
+                return [];
+            }
+        }
+        
+        unvisited = [start];
+        while(unvisited.length > 0) {
+            let subStart = unvisited[0];
+            let current = unvisited[0];
+            let subCircuit = [];
+            do {
+                newCurrent = current.neighbors[0];
+                subCircuit.push(newCurrent);
+                newCurrent.removeNeighbor(current);
+                current.removeNeighbor(newCurrent);
+                current = newCurrent;
+            }
+            while(current != subStart);
+            let w = 0;
+            while(true) {
+                if(circuit[w].id == subStart.id) {
+                    break;
+                }
+                w = w+1;
+            }
+            circuit.splice(w+1, 0, ...subCircuit);
+            unvisited = unvisitedEdgeVertex(circuit);
+        }
+        return circuit;
+    }
 }
