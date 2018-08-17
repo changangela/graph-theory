@@ -88,8 +88,6 @@ function draw() {
 
 function keyPressed() {
 	if (keyCode == KEY_MAPPING.BIPARTITE) {
-		graph.disableVertices();
-		graph.disableEdges();
 		graphController.bipartite();
 	} else if (keyCode == KEY_MAPPING.NORMAL) {
 		graphController.normal();

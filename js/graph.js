@@ -212,6 +212,8 @@ Graph.prototype.setColor = function(color) {
 Graph.prototype.solve = function(mode, solver) {
 	this.mode = mode;
 	this.circuit = null;
+	this.disableVertices();
+	this.disableEdges();
 	this.clearLabels();
 	this.setColor(GRAPH_COLORS.NORMAL);
 	solver.solve();
