@@ -2,7 +2,8 @@ const GRAPH_MODE = {
 	NORMAL: 'BUILDER',
 	BIPARTITE: 'BIPARTITE',
 	DEGREES: 'DEGREES',
-    EULERIAN: 'EULERIAN CYCLE'
+    EULERIAN: 'EULERIAN CYCLE',
+    COLORING: 'COLORING',
 }
 
 const GRAPH_COLORS = {
@@ -11,6 +12,8 @@ const GRAPH_COLORS = {
 	RED: '#ffcccc',
 	INVALID: '#cccccc',
 	CYCLE: '#ccffff',
+	NORMAL: '#ccccff',
+	ACTIVE: '#ccffcc',
 }
 
 function Graph() {
@@ -121,23 +124,19 @@ Graph.prototype.numVertices = function() {
 }
 
 Graph.prototype.bipartite = function() {
-	this.mode = GRAPH_MODE.BIPARTITE;
-	this.circuit = null;
-	const bipartiteSolver = new Bipartite(graph);
-	bipartiteSolver.solve();
-
+	this.solve(GRAPH_MODE.BIPARTITE, new Bipartite(this));
 }
 
 Graph.prototype.eulerian = function() {
-    this.mode = GRAPH_MODE.EULERIAN;
-    const eulerianSolver = new Eulerian(graph);
-    eulerianSolver.solve();
+	this.solve(GRAPH_MODE.EULERIAN, new Eulerian(this));
+}
+
+Graph.prototype.coloring = function() {
+	this.solve(GRAPH_MODE.COLORING, new Coloring(this));
 }
 
 Graph.prototype.normal = function() {
-	this.mode = GRAPH_MODE.NORMAL;
-	this.circuit = null;
-	this.disableVertices();
+	this.solve(GRAPH_MODE.NORMAL, new Normal(this));
 }
 
 Graph.prototype.components = function() {
@@ -167,8 +166,7 @@ Graph.prototype.components = function() {
 }
 
 Graph.prototype.degrees = function() {
-	this.mode = GRAPH_MODE.DEGREES;
-	this.circuit = null;
+	this.solve(GRAPH_MODE.DEGREES, new Degrees(this));
 }
 
 Graph.prototype.setCircuit = function(circuit) {
@@ -208,5 +206,19 @@ Graph.prototype.idToIndex = function(id) {
 Graph.prototype.setColor = function(color) {
 	for (let i = 0; i < this.vertices.length; ++i) {
 		this.vertices[i].color = color;
+	}
+}
+
+Graph.prototype.solve = function(mode, solver) {
+	this.mode = mode;
+	this.circuit = null;
+	this.clearLabels();
+	this.setColor(GRAPH_COLORS.NORMAL);
+	solver.solve();
+}
+
+Graph.prototype.clearLabels = function() {
+	for (let i = 0; i < this.vertices.length; ++i) {
+		this.vertices[i].setLabel(null);
 	}
 }

@@ -46,6 +46,7 @@ Eulerian.prototype.solve = function() {
         for (let i = 0; i < graph.vertices.length; ++i) {
             if (graph.vertices[i].neighbors.length % 2 == 1) {
                 graph.vertices[i].color = GRAPH_COLORS.RED;
+                graph.vertices[i].setLabel(graph.vertices[i].degrees());
             }
         }
     } 

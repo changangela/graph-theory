@@ -1,18 +1,13 @@
 const VERTEX_RADIUS = 15;
 
-const VERTEX_COLORS = {
-	NORMAL: '#ccccff',
-	ACTIVE: '#ccffcc',
-	// ACTIVE: '#ffcccc',
-}
-
 function Vertex (x, y) {
-	this.color = VERTEX_COLORS.NORMAL;
+	this.color = GRAPH_COLORS.NORMAL;
 	this.radius = VERTEX_RADIUS;
 	this.x = x;
 	this.y = y;
 	this.active = false;
 	this.id = Vertex.uniqueId();
+	this.label = null;
 
 	this.neighbors = [];
 }
@@ -20,16 +15,16 @@ function Vertex (x, y) {
 Vertex.prototype.toggle = function() {
 	if (this.active) {
 		this.active = false;
-		this.color = VERTEX_COLORS.NORMAL;
+		this.color = GRAPH_COLORS.NORMAL;
 	} else {
 		this.active = true;
-		this.color = VERTEX_COLORS.ACTIVE;
+		this.color = GRAPH_COLORS.ACTIVE;
 	}
 }
 
 Vertex.prototype.disable = function() {
 	this.active = false;
-	this.color = VERTEX_COLORS.NORMAL;
+	this.color = GRAPH_COLORS.NORMAL;
 }
 
 Vertex.prototype.isActive = function() {
@@ -61,6 +56,10 @@ Vertex.prototype.removeNeighbor = function(vertex) {
 
 Vertex.prototype.degrees = function() {
 	return this.neighbors.length;
+}
+
+Vertex.prototype.setLabel = function(text) {
+	this.label = text;
 }
 
 function makeIdFactory() {

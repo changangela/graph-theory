@@ -1,54 +1,76 @@
 function Coloring(graph) {
-	this.sets = [];
+	this.graph = graph;
 }
 
-Coloring.prototype.solve = function(vertices) {
-	this.sets = [];
+Coloring.prototype.solve = function() {
+	let sets = [], colors = new Set();
 
-	let queue = Graph.components(vertices);
+	function add(vertex) {
+		for (let i = 0; i < sets.length; ++i) {
+			let valid = true;
+			for (let j = 0; j < vertex.neighbors.length; ++j) {
+				if (sets[i].has(vertex.neighbors[j])) {
+					valid = false;
+				}
+			}
+
+			if (valid) {
+				sets[i].add(vertex);
+				return;
+			}
+		}
+
+		sets.push(new Set([vertex]));
+	};
+
+	function contains(vertex) {
+		for (let i = 0; i < sets.length; ++i) {
+			if (sets[i].has(vertex)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function unusedColor() {
+		function randomHex() {
+			const HEX = 'cf';
+			return HEX.charAt(Math.floor(Math.random() * HEX.length)).repeat(2);
+		}
+
+		while (true) {
+			const r = randomHex(), g = randomHex(), b = randomHex();
+			const color = '#' + r + g + b;
+			if (!colors.has(color)) {
+				colors.add(color);
+				return color;
+			}
+		}
+	}
+
+	let queue = this.graph.components();
 
 	for (let i = 0; i < queue.length; ++i) {
-		this.add(queue[i]);
+		add(queue[i]);
 	}
 
 	while (queue.length > 0) {
 		let current = queue.shift();
 		for (let i = 0; i < current.neighbors.length; ++i) {
-			if (!this.contains(current.neighbors[i])) {
-				this.add(current.neighbors[i]);
+			if (!contains(current.neighbors[i])) {
+				add(current.neighbors[i]);
 				queue.push(current.neighbors[i]);
 			}
 		}
 	}
-}
 
-Coloring.prototype.add = function(vertex) {
-	for (let i = 0; i < this.sets.length; ++i) {
-		let valid = true;
-		for (let j = 0; j < vertex.neighbors.length; ++j) {
-			if (this.sets[i].has(vertex.neighbors[j])) {
-				valid = false;
-			}
-		}
+	console.log(sets);
 
-		if (valid) {
-			this.sets[i].add(vertex);
-			return;
-		}
+	for (let i = 0; i < sets.length; ++i) {
+		const color = unusedColor();
+		sets[i].forEach(vertex => {
+			vertex.color = color;
+			vertex.setLabel(String.fromCharCode(65 + i));
+		});
 	}
-
-	this.sets.push(new Set([vertex]));
-};
-
-Coloring.prototype.contains = function(vertex) {
-	for (let i = 0; i < this.sets.length; ++i) {
-		if (this.sets[i].has(vertex)) {
-			return true;
-		}
-	}
-	return false;
-}
-
-Coloring.prototype.colors = function() {
-	return this.sets.length;
 }

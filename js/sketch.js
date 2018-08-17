@@ -11,6 +11,7 @@ const KEY_MAPPING = {
 	NORMAL: 78, // 'n'
 	DEGREES: 68, // 'd'
     EULERIAN: 69, // 'e'
+    COLORING: 67, // 'c'
 }
 
 let graph = new Graph();
@@ -39,10 +40,10 @@ function drawVertex(vertex) {
 	fill(vertex.color).stroke(TEXT_COLOR).strokeWeight(LIGHT_STROKE);
 	ellipse(vertex.x, vertex.y, vertex.radius, vertex.radius);
 
-	if (graph.mode == GRAPH_MODE.DEGREES) {
+	if (vertex.label != null) {
 	    textAlign(CENTER, CENTER);
 		fill(TEXT_COLOR).noStroke();
-		text(vertex.degrees(), vertex.x, vertex.y);
+		text(vertex.label, vertex.x, vertex.y);
 	}
 }
 
@@ -99,6 +100,8 @@ function keyPressed() {
 		graphController.removeEdge(graph.activeEdge());
 	} else if (keyCode == KEY_MAPPING.EULERIAN) {
         graphController.eulerian();
+    } else if (keyCode == KEY_MAPPING.COLORING) {
+    	graphController.coloring();
     }
 
 }

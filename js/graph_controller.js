@@ -108,3 +108,6 @@ GraphController.prototype.degrees = function() {
 	this.graph.degrees();
 }
 
+GraphController.prototype.coloring = function() {
+	this.graph.coloring();
+}
