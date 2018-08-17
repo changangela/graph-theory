@@ -62,8 +62,6 @@ GraphController.prototype.disableEdges = function(target) {
 
 GraphController.prototype.addVertex = function(x, y) {
 	this.graph.addVertex(new Vertex(x, y));
-
-	let vertex = new Vertex(x, y);
 }
 
 GraphController.prototype.toggleVertex = function(vertex) {

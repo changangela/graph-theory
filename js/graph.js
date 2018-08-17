@@ -2,7 +2,7 @@ const GRAPH_MODE = {
 	NORMAL: 'BUILDER',
 	BIPARTITE: 'BIPARTITE',
 	DEGREES: 'DEGREES',
-        EULERIAN: 'EULERIAN CYCLE'
+    EULERIAN: 'EULERIAN CYCLE'
 }
 
 function Graph() {
@@ -122,15 +122,8 @@ Graph.prototype.bipartite = function() {
 
 Graph.prototype.eulerian = function() {
     this.mode = GRAPH_MODE.EULERIAN;
-    const circuitSolver = new CircuitSolver(graph);
-    let verticesOfCircuit = circuitSolver.solve();
-    let edgesOfCircuit = [];
-    for(let i = 0; i<verticesOfCircuit.length -1; ++i) {
-        edgesOfCircuit.push(this.getEdge(verticesOfCircuit[i], verticesOfCircuit[i+1]));
-    }
-    if(edgesOfCircuit.length > 0) {
-        this.setCircuit(new Circuit(edgesOfCircuit));
-    }
+    const eulerianSolver = new Eulerian(graph);
+    eulerianSolver.solve();
 }
 
 Graph.prototype.normal = function() {
@@ -141,8 +134,7 @@ Graph.prototype.normal = function() {
 
 Graph.prototype.components = function() {
 	// returns a list of vertices, one from each component of the graph
-	let visited = new Set();
-	let components = [];
+	let visited = new Set(), components = [];
 
 	function bfs(vertex, visited) {
 		if (visited.has(vertex)) {
@@ -178,3 +170,29 @@ Graph.prototype.setCircuit = function(circuit) {
 Graph.prototype.hasCircuit = function() {
 	return this.circuit;
 }
+
+Graph.prototype.clone = function() {
+	let idMap = {}, graph = []
+
+	for (let i = 0; i < this.vertices.length; ++i) {
+		idMap[this.vertices[i].id] = i;
+	}
+
+	for (let i = 0; i < this.vertices.length; ++i) {
+		graph.push([]);
+		for (let j = 0; j < this.vertices[i].neighbors.length; ++j) {
+			graph[i].push(idMap[this.vertices[i].neighbors[j].id]);
+		}
+	}
+
+	return graph;
+}
+
+Graph.prototype.idToIndex = function(id) {
+	for (let i = 0; i < this.vertices.length; ++i) {
+		if (this.vertices[i].id == id) {
+			return i;
+		}
+	}
+	return null;
+};

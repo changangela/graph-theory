@@ -33,17 +33,14 @@ Bipartite.prototype.solve = function() {
 		graph.setCircuit(new Circuit(cycle));
 	}
 
-	let setA = new Set(), setB = new Set();
-
-	let queue = graph.components(), parent = {};
+	let setA = new Set(), setB = new Set(), queue = graph.components(), parent = {};
 	
 	for (let i = 0; i < queue.length; ++i) {
 		setA.add(queue[i]);
 		parent[queue[i].id] = null;
 	}
 	while (queue.length != 0) {
-		let current = queue.shift();
-		let thisSet = setA.has(current) ? setA : setB, otherSet = setA.has(current) ? setB : setA; 
+		let current = queue.shift(), thisSet = setA.has(current) ? setA : setB, otherSet = setA.has(current) ? setB : setA; 
                 
 		for (let i = 0; i < current.neighbors.length; ++i) {
 			if (thisSet.has(current.neighbors[i])) {

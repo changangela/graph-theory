@@ -10,7 +10,7 @@ const KEY_MAPPING = {
 	BIPARTITE: 66, // 'b'
 	NORMAL: 78, // 'n'
 	DEGREES: 68, // 'd'
-        EULERIAN: 69,
+    EULERIAN: 69, // 'e'
 }
 
 let graph = new Graph();
@@ -98,8 +98,8 @@ function keyPressed() {
 		graphController.removeVertex(graph.activeVertex());
 		graphController.removeEdge(graph.activeEdge());
 	} else if (keyCode == KEY_MAPPING.EULERIAN) {
-                graphController.eulerian();
-        }
+        graphController.eulerian();
+    }
 
 }
 
