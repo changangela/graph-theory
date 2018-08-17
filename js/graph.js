@@ -20,7 +20,7 @@ function Graph() {
 	this.vertices = [];
 	this.edges = []; // a bit redundant but makes it easier to store graphics information
 	this.mode = GRAPH_MODE.NORMAL;
-
+	this.weighted = false;
 	this.circuit = null;
 }
 
@@ -133,6 +133,7 @@ Graph.prototype.eulerian = function() {
 
 Graph.prototype.coloring = function() {
 	this.solve(GRAPH_MODE.COLORING, new Coloring(this));
+
 }
 
 Graph.prototype.normal = function() {
@@ -223,4 +224,8 @@ Graph.prototype.clearLabels = function() {
 	for (let i = 0; i < this.vertices.length; ++i) {
 		this.vertices[i].setLabel(null);
 	}
+}
+
+Graph.prototype.toggleWeighted = function() {
+	this.weighted = !this.weighted;
 }

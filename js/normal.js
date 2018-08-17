@@ -3,5 +3,5 @@ function Normal(graph) {
 }
 
 Normal.prototype.solve = function() {
-	graph.disableVertices();
+	this.graph.disableVertices();
 }

@@ -9,6 +9,7 @@ function Edge(u, v) {
 	this.u = u;
 	this.v = v;
 	this.active = false;
+	this.weight = 1;
 }
 
 Edge.prototype.contains = function(vertex) {
@@ -29,4 +30,8 @@ Edge.prototype.disable = function() {
 
 Edge.prototype.isActive = function() {
 	return this.active;
+}
+
+Edge.prototype.setWeight = function(weight) {
+	this.weight = weight;
 }

@@ -12,6 +12,7 @@ const KEY_MAPPING = {
 	DEGREES: 68, // 'd'
     EULERIAN: 69, // 'e'
     COLORING: 67, // 'c'
+    WEIGHTED: 87, // 'w'
 }
 
 let graph = new Graph();
@@ -34,6 +35,16 @@ function drawEdge(edge) {
 	}
 	stroke(EDGE_COLORS.NORMAL).strokeWeight(LIGHT_STROKE);
     line(edge.u.x, edge.u.y, edge.v.x, edge.v.y);
+
+    if (graph.weighted) {
+    	rectMode(CENTER);
+    	fill(BACKGROUND_COLOR).strokeWeight(TEXT_COLOR).strokeWeight(LIGHT_STROKE);
+    	rect(edge.u.x + (edge.v.x - edge.u.x) * 0.5, edge.u.y + (edge.v.y - edge.u.y) * 0.5, 10 * edge.weight.toString().length, 20);
+
+	    textAlign(CENTER, CENTER);
+		fill(TEXT_COLOR).noStroke();
+		text(edge.weight, edge.u.x + (edge.v.x - edge.u.x) * 0.5, edge.u.y + (edge.v.y - edge.u.y) * 0.5);
+    }
 }
 
 function drawVertex(vertex) {
@@ -48,6 +59,7 @@ function drawVertex(vertex) {
 }
 
 function drawMode() {
+	rectMode(CORNER);
 	fill(TEXT_COLOR).stroke(TEXT_COLOR).strokeWeight(LIGHT_STROKE / 5);
     textAlign(LEFT, TOP);
 	text(graph.mode, 10, 10, 70, 20);
@@ -86,6 +98,12 @@ function keyPressed() {
         graphController.eulerian();
     } else if (keyCode == KEY_MAPPING.COLORING) {
     	graphController.coloring();
+    } else if (keyCode == KEY_MAPPING.WEIGHTED) {
+    	graphController.weighted();
+    } else if (keyCode == ENTER) {
+    	if (graph.weighted) {
+    		graphController.setWeight();
+    	}
     }
 
 }

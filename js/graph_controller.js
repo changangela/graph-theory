@@ -111,3 +111,15 @@ GraphController.prototype.degrees = function() {
 GraphController.prototype.coloring = function() {
 	this.graph.coloring();
 }
+
+GraphController.prototype.weighted = function() {
+	this.graph.toggleWeighted();
+}
+
+GraphController.prototype.setWeight = function() {
+    const target = this.graph.activeEdge();
+	if (target != null) {
+    	const weight = prompt("Edge weight?", target.weight); 
+		target.setWeight(weight);
+	}
+}
