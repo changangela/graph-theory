@@ -53,26 +53,12 @@ function drawMode() {
 	text(graph.mode, 10, 10, 70, 20);
 }
 
-function drawCircuit(circuit) {
-	const target = circuit.highlightedEdge();
-	stroke(EDGE_COLORS.ACTIVE).strokeWeight(HIGHLIGHT_STROKE);
-    line(target.u.x, target.u.y, target.v.x, target.v.y);
-
-	for (let i = 0; i < circuit.edges.length; ++i) {
-		const edge = circuit.edges[i];
-		if (edge != target) {
-			stroke(EDGE_COLORS.CIRCUIT).strokeWeight(HIGHLIGHT_STROKE);
-	    	line(edge.u.x, edge.u.y, edge.v.x, edge.v.y);
-		}
-	}
-}
-
 function draw() {
 	background(BACKGROUND_COLOR);
 	drawMode();
 
 	if (graph.hasCircuit()) {
-		drawCircuit(graph.circuit);
+		graph.circuit.draw();
 	}
 
     // draw edges

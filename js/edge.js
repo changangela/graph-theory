@@ -2,6 +2,7 @@ const EDGE_COLORS = {
 	NORMAL: '#000000',
 	ACTIVE: '#ffffcc',
 	CIRCUIT: '#ccccff',
+	ELECTRON: '#ffffcc',
 }
 
 function Edge(u, v) {
