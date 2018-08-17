@@ -107,3 +107,4 @@ GraphController.prototype.normal = function() {
 GraphController.prototype.degrees = function() {
 	this.graph.degrees();
 }
+

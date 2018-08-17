@@ -1,10 +1,3 @@
-GRAPH_COLORS = {
-	RED: '#ffffcc',
-	YELLOW: '#ffccff',
-	INVALID: '#cccccc',
-	CYCLE: '#ccffff',
-}
-
 function Bipartite(graph) {
 	this.graph = graph;
 }
@@ -13,9 +6,7 @@ Bipartite.prototype.solve = function() {
 	function impossible(u, v, parent, graph) {
 		let cycle = [graph.getEdge(u, v)];
 
-		for (var i = 0; i < graph.vertices.length; ++i) {
-			graph.vertices[i].color = GRAPH_COLORS.INVALID;
-		}
+		graph.setColor(GRAPH_COLORS.INVALID);
 
 		while (u != v) {
 			u.color = GRAPH_COLORS.CYCLE;
@@ -56,10 +47,9 @@ Bipartite.prototype.solve = function() {
 		}
 	}
 
-
 	// color the sets
 	setA.forEach(function(vertex) {
-		vertex.color = GRAPH_COLORS.RED;
+		vertex.color = GRAPH_COLORS.PINK;
 	})
 
 	setB.forEach(function(vertex) {

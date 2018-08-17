@@ -5,6 +5,14 @@ const GRAPH_MODE = {
     EULERIAN: 'EULERIAN CYCLE'
 }
 
+const GRAPH_COLORS = {
+	YELLOW: '#ffffcc',
+	PINK: '#ffccff',
+	RED: '#ffcccc',
+	INVALID: '#cccccc',
+	CYCLE: '#ccffff',
+}
+
 function Graph() {
 	this.vertices = [];
 	this.edges = []; // a bit redundant but makes it easier to store graphics information
@@ -196,3 +204,9 @@ Graph.prototype.idToIndex = function(id) {
 	}
 	return null;
 };
+
+Graph.prototype.setColor = function(color) {
+	for (let i = 0; i < this.vertices.length; ++i) {
+		this.vertices[i].color = color;
+	}
+}

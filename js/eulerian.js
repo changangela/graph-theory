@@ -21,9 +21,9 @@ Eulerian.prototype.solve = function() {
         return [];
     }
 
-    function evenDegrees(vertices) {
-        for(let i = 0; i < vertices.length; ++i) {
-            if(vertices[i].degrees() % 2 == 1) {
+    function evenDegrees(graph) {
+        for(let i = 0; i < graph.vertices.length; ++i) {
+            if(graph.vertices[i].degrees() % 2 == 1) {
                 return false;
             }
         }
@@ -41,6 +41,14 @@ Eulerian.prototype.solve = function() {
         removeNeighbor(u, v);
         removeNeighbor(v, u);
     }
+
+    function findOddVertices(graph) {
+        for (let i = 0; i < graph.vertices.length; ++i) {
+            if (graph.vertices[i].neighbors.length % 2 == 1) {
+                graph.vertices[i].color = GRAPH_COLORS.RED;
+            }
+        }
+    } 
     
     for (let i = 0; i < components.length; ++i) {
         if (components[i].neighbors.length > 0) {
@@ -48,11 +56,15 @@ Eulerian.prototype.solve = function() {
         }
     }
     
-    if (nonZeroVertexDegreeComponents.length != 1 || !evenDegrees(this.graph.vertices)) {
-        for (var i = 0; i < this.graph.vertices.length; ++i) {
-            this.graph.vertices[i].color = GRAPH_COLORS.INVALID;
-        }
+    if (nonZeroVertexDegreeComponents.length > 1 || !evenDegrees(this.graph)) {
+        this.graph.setColor(GRAPH_COLORS.INVALID);
+        findOddVertices(this.graph);
     } else {
+
+        if (nonZeroVertexDegreeComponents.length == 0) {
+            return;
+        }
+
         const start = nonZeroVertexDegreeComponents[0];
         let circuit = [start], unvisited = [start];
         
@@ -84,6 +96,7 @@ Eulerian.prototype.solve = function() {
             edgesOfCircuit.push(this.graph.getEdge(verticesOfCircuit[i], verticesOfCircuit[i+1]));
         }
         
+        this.graph.setColor(GRAPH_COLORS.CYCLE);
         this.graph.setCircuit(new Circuit(edgesOfCircuit));
     }
 }
