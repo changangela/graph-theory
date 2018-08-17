@@ -4,6 +4,7 @@ const GRAPH_MODE = {
 	DEGREES: 'DEGREES',
     EULERIAN: 'EULERIAN CYCLE',
     COLORING: 'COLORING',
+    DIJKSTRAS: 'DIJKSTRAS',
 }
 
 const GRAPH_COLORS = {
@@ -228,4 +229,8 @@ Graph.prototype.clearLabels = function() {
 
 Graph.prototype.toggleWeighted = function() {
 	this.weighted = !this.weighted;
+}
+
+Graph.prototype.dijkstras = function(u, v) {
+	this.solve(GRAPH_MODE.DIJKSTRAS, new Dijkstras(this, u, v));
 }

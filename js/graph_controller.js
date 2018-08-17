@@ -123,3 +123,11 @@ GraphController.prototype.setWeight = function() {
 		target.setWeight(weight);
 	}
 }
+
+GraphController.prototype.dijkstras = function(x, y) {
+	const target = this.selectVertex(x, y);
+	const active = this.graph.activeVertex();
+	if (target != null) {
+		this.graph.dijkstras(target, active);
+	}
+}
