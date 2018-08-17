@@ -64,8 +64,6 @@ Coloring.prototype.solve = function() {
 		}
 	}
 
-	console.log(sets);
-
 	for (let i = 0; i < sets.length; ++i) {
 		const color = unusedColor();
 		sets[i].forEach(vertex => {
