@@ -10,6 +10,7 @@ const KEY_MAPPING = {
 	BIPARTITE: 66, // 'b'
 	NORMAL: 78, // 'n'
 	DEGREES: 68, // 'd'
+	PLANARITY: 80, // 'p'
 }
 
 let graph = new Graph();
@@ -41,7 +42,7 @@ function drawVertex(vertex) {
 	if (graph.mode == GRAPH_MODE.DEGREES) {
 	    textAlign(CENTER, CENTER);
 		fill(TEXT_COLOR).noStroke();
-		text(vertex.degrees(), vertex.x, vertex.y);
+		text(vertex.degree(), vertex.x, vertex.y);
 	}
 }
 
@@ -93,6 +94,8 @@ function keyPressed() {
 		graphController.normal();
 	} else if (keyCode == KEY_MAPPING.DEGREES) {
 		graphController.degrees();
+	} else if (keyCode == KEY_MAPPING.PLANARITY) {
+		graphController.planarity();
 	} else if (keyCode == DELETE) {
 		graphController.removeVertex(graph.activeVertex());
 		graphController.removeEdge(graph.activeEdge());

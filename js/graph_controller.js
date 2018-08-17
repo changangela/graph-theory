@@ -28,7 +28,7 @@ GraphController.prototype.selectVertex = function(x, y) {
 
 GraphController.prototype.selectedEdge = function(x, y) {
 	function isOnSegment(ux, uy, vx, vy, px, py) {
-		const epsilon = 2500;
+		const epsilon = 1000;
 		const delta = Math.abs((py - uy)  * (vx - ux) - (vy - uy) * (px - ux));
 	    return delta < epsilon && (px >= Math.min(ux, vx) - VERTEX_RADIUS / 2 && px <= Math.max(ux, vx) + VERTEX_RADIUS / 2);
 	}
@@ -104,4 +104,8 @@ GraphController.prototype.normal = function() {
 
 GraphController.prototype.degrees = function() {
 	this.graph.degrees();
+}
+
+GraphController.prototype.planarity = function() {
+	this.graph.planarity();
 }

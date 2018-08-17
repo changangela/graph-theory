@@ -9,7 +9,7 @@ function Bipartite(graph) {
 	this.graph = graph;
 }
 
-Bipartite.prototype.solve = function() {	
+Bipartite.prototype.solve = function() {
 	function impossible(u, v, parent, graph) {
 		let cycle = [graph.getEdge(u, v)];
 
@@ -35,7 +35,7 @@ Bipartite.prototype.solve = function() {
 
 	let setA = new Set(), setB = new Set();
 
-	let queue = graph.components(), parent = {};
+	let queue = Graph.components(this.graph.vertices), parent = {};
 	
 	for (let i = 0; i < queue.length; ++i) {
 		setA.add(queue[i]);
@@ -69,4 +69,10 @@ Bipartite.prototype.solve = function() {
 	setB.forEach(function(vertex) {
 		vertex.color = GRAPH_COLORS.YELLOW;
 	})
+}
+
+Bipartite.isBipartite = function(vertices) {
+	let coloring = new Coloring();
+	coloring.solve(vertices);
+	return coloring.colors() <= 2;
 }

@@ -2,6 +2,7 @@ const GRAPH_MODE = {
 	NORMAL: 'BUILDER',
 	BIPARTITE: 'BIPARTITE',
 	DEGREES: 'DEGREES',
+	PLANARITY: 'PLANARITY',
 }
 
 function Graph() {
@@ -102,7 +103,7 @@ Graph.prototype.disableEdges = function() {
 Graph.prototype.numEdges = function() {
 	let ret = 0;
 	for (let i = 0; i < this.vertices.length; ++i) {
-		ret += this.vertices[i].degrees();
+		ret += this.vertices[i].degree();
 	}
 	return ret / 2;
 }
@@ -114,7 +115,7 @@ Graph.prototype.numVertices = function() {
 Graph.prototype.bipartite = function() {
 	this.mode = GRAPH_MODE.BIPARTITE;
 	this.circuit = null;
-	const bipartiteSolver = new Bipartite(graph);
+	const bipartiteSolver = new Bipartite(this);
 	bipartiteSolver.solve();
 }
 
@@ -124,7 +125,27 @@ Graph.prototype.normal = function() {
 	this.disableVertices();
 }
 
-Graph.prototype.components = function() {
+Graph.prototype.degrees = function() {
+	this.mode = GRAPH_MODE.DEGREES;
+	this.circuit = null;
+}
+
+Graph.prototype.planarity = function() {
+	this.mode = GRAPH_MODE.PLANARITY;
+	this.circuit = null;
+	const planaritySolver = new Planarity(this);
+	console.log(planaritySolver.solve());
+}
+
+Graph.prototype.setCircuit = function(circuit) {
+	this.circuit = circuit;
+}
+
+Graph.prototype.hasCircuit = function() {
+	return this.circuit;
+}
+
+Graph.components = function(vertices) {
 	// returns a list of vertices, one from each component of the graph
 	let visited = new Set();
 	let components = [];
@@ -141,25 +162,12 @@ Graph.prototype.components = function() {
 		}
 	}
 
-	for (let i = 0; i < this.vertices.length; ++i) {
-		if (!visited.has(this.vertices[i])) {
-			components.push(this.vertices[i]);
-			bfs(this.vertices[i], visited);
+	for (let i = 0; i < vertices.length; ++i) {
+		if (!visited.has(vertices[i])) {
+			components.push(vertices[i]);
+			bfs(vertices[i], visited);
 		}
 	}
 
 	return components;
-}
-
-Graph.prototype.degrees = function() {
-	this.mode = GRAPH_MODE.DEGREES;
-	this.circuit = null;
-}
-
-Graph.prototype.setCircuit = function(circuit) {
-	this.circuit = circuit;
-}
-
-Graph.prototype.hasCircuit = function() {
-	return this.circuit;
 }
