@@ -12,6 +12,7 @@ const KEY_MAPPING = {
 	DEGREES: 68, // 'd'
     EULERIAN: 69, // 'e'
     COLORING: 67, // 'c'
+    MST: 77, //'m'
     WEIGHTED: 87, // 'w'
 }
 
@@ -98,7 +99,10 @@ function keyPressed() {
         graphController.eulerian();
     } else if (keyCode == KEY_MAPPING.COLORING) {
     	graphController.coloring();
-    } else if (keyCode == KEY_MAPPING.WEIGHTED) {
+    } else if (keyCode == KEY_MAPPING.MST) {
+        graphController.mst();
+    }
+    else if (keyCode == KEY_MAPPING.WEIGHTED) {
     	graphController.weighted();
     } else if (keyCode == ENTER) {
     	if (graph.weighted) {

@@ -112,6 +112,10 @@ GraphController.prototype.coloring = function() {
 	this.graph.coloring();
 }
 
+GraphController.prototype.mst = function() {
+    this.graph.mst();
+}
+
 GraphController.prototype.weighted = function() {
 	this.graph.toggleWeighted();
 }
