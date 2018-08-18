@@ -119,8 +119,8 @@ GraphController.prototype.weighted = function() {
 GraphController.prototype.setWeight = function() {
     const target = this.graph.activeEdge();
 	if (target != null) {
-    	const weight = prompt("Edge weight?", target.weight); 
-		target.setWeight(weight);
+    	const weight = prompt("Edge weight?", target.weight);
+		target.setWeight(parseInt(weight));
 	}
 }
 

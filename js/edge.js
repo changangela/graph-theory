@@ -10,6 +10,7 @@ function Edge(u, v) {
 	this.v = v;
 	this.active = false;
 	this.weight = 1;
+	this.id = Edge.uniqueId();
 }
 
 Edge.prototype.contains = function(vertex) {
@@ -35,3 +36,12 @@ Edge.prototype.isActive = function() {
 Edge.prototype.setWeight = function(weight) {
 	this.weight = weight;
 }
+
+function makeIdFactory() {
+    let i = 0;
+    return function() {
+        return ++i;
+    }
+}
+
+Edge.uniqueId = makeIdFactory();

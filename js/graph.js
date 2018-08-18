@@ -196,6 +196,23 @@ Graph.prototype.clone = function() {
 	return graph;
 }
 
+Graph.prototype.cloneWeighted = function() {
+	let idMap = {}, graph = []
+
+	for (let i = 0; i < this.vertices.length; ++i) {
+		idMap[this.vertices[i].id] = i;
+	}
+
+	for (let i = 0; i < this.vertices.length; ++i) {
+		graph.push([]);
+		for (let j = 0; j < this.vertices[i].neighbors.length; ++j) {
+			graph[i].push([idMap[this.vertices[i].neighbors[j].id], this.getEdge(this.vertices[i], this.vertices[i].neighbors[j]).weight]);
+		}
+	}
+
+	return graph;	
+}
+
 Graph.prototype.idToIndex = function(id) {
 	for (let i = 0; i < this.vertices.length; ++i) {
 		if (this.vertices[i].id == id) {
@@ -232,5 +249,24 @@ Graph.prototype.toggleWeighted = function() {
 }
 
 Graph.prototype.dijkstras = function(u, v) {
-	this.solve(GRAPH_MODE.DIJKSTRAS, new Dijkstras(this, u, v));
+	this.solve(GRAPH_MODE.DIJKSTRAS, new Dijkstras(this, v, u));
+}
+
+Graph.prototype.pathExists = function(u, v) {
+	let visited = new Set();
+
+	function bfs(vertex) {
+		if (visited.has(vertex)) {
+			return;
+		}
+
+		visited.add(vertex);
+
+		for (let i = 0; i < vertex.neighbors.length; ++i) {
+			bfs(vertex.neighbors[i], visited);
+		}
+	}
+
+	bfs(u);
+	return visited.has(v);
 }
