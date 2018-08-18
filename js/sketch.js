@@ -15,6 +15,7 @@ const KEY_MAPPING = {
     MST: 77, //'m'
     WEIGHTED: 87, // 'w'
     DIJKSTRAS: 115, // 's'
+    LABELS: 76, // 'l'
 }
 
 let graph = new Graph();
@@ -109,6 +110,8 @@ function keyPressed() {
     	if (graph.weighted) {
     		graphController.setWeight();
     	}
+    } else if (keyCode == KEY_MAPPING.LABELS) {
+    	
     }
 }
 

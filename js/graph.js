@@ -27,6 +27,7 @@ function Graph() {
     this.mode = GRAPH_MODE.NORMAL;
     this.weighted = true;
     this.circuit = null;
+    this.labels = true;
 }
 
 Graph.prototype.addVertex = function (vertex) {
@@ -44,7 +45,7 @@ Graph.prototype.addEdge = function (u, v) {
 Graph.prototype.getEdge = function (u, v) {
     for (let i = 0; i < this.edges.length; ++i) {
         if (this.edges[i].contains(u) && this.edges[i].contains(v)) {
-                return this.edges[i];
+            return this.edges[i];
         }
     }
     return null;
@@ -243,11 +244,23 @@ Graph.prototype.solve = function (mode, solver) {
     this.disableEdges();
     this.clearLabels();
     this.setColor(GRAPH_COLORS.NORMAL);
+
     solver.solve();
 }
 
+Graph.prototype.existsLabels = function() {
+    for (let i = 0; i < this.vertices.length; ++i) {
+        if (this.vertices[i].label != null) {
+            return true;
+        }
+    } 
+    return false;
+}
+
+
 Graph.prototype.clearLabels = function () {
     for (let i = 0; i < this.vertices.length; ++i) {
+        this.vertices[i].label = null;
     }
 }
 
