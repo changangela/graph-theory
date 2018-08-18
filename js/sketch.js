@@ -117,21 +117,19 @@ function mousePressed() {
 		graphController.normal();
 	}
 	
-	if (keyIsPressed) {
-		if (keyCode == SHIFT) {
-			const target = graphController.addEdge(mouseX, mouseY);
-			graphController.disableVertices(null);
-			graphController.disableEdges(null);
-			
-			if (target != null) {
-				target.toggle();
-			}
-		} else if (keyCode == KEY_MAPPING.DIJKSTRAS) {
-			if (graph.weighted){
-				graphController.dijkstras(mouseX, mouseY);
-			}
+	if (keyIsPressed && keyCode == SHIFT) {
+
+		const target = graphController.addEdge(mouseX, mouseY);
+		graphController.disableVertices(null);
+		graphController.disableEdges(null);
+		
+		if (target != null) {
+			target.toggle();
 		}
-	
+	} else if (keyIsPressed && keyCode == KEY_MAPPING.DIJKSTRAS) {
+		if (graph.weighted){
+			graphController.dijkstras(mouseX, mouseY);
+		}
 	} else {
 		const targetVertex = graphController.selectVertex(mouseX, mouseY);
 		const targetEdge = (targetVertex != null) ? null : graphController.selectedEdge(mouseX, mouseY);
