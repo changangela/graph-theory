@@ -127,7 +127,7 @@ GraphController.prototype.setWeight = function() {
 GraphController.prototype.dijkstras = function(x, y) {
 	const target = this.selectVertex(x, y);
 	const active = this.graph.activeVertex();
-	if (target != null) {
+	if (target != null && active != null && target != active) {
 		this.graph.dijkstras(target, active);
 	}
 }
