@@ -6,17 +6,6 @@ function Circuit(edges) {
 	this.timer = 0;
 }
 
-Circuit.prototype.highlightedEdge = function() {
-	if (this.timer >= ANIMATE_TIME) {
-		this.index = (this.index + 1) % this.edges.length;
-		this.timer = 0;
-	}
-
-	this.timer++;
-
-	return this.edges[this.index];
-}
-
 Circuit.prototype.draw = function() {
 	const target = this.edges[this.index];
 	if (this.timer >= ANIMATE_TIME) {
@@ -34,7 +23,7 @@ Circuit.prototype.draw = function() {
 	stroke(EDGE_COLORS.ELECTRON).strokeWeight(HIGHLIGHT_STROKE);
 
 	let begin = null, end = null;
-	if (this.edges[(this.index + 1) % this.edges.length].contains(target.u)) {
+	if ((this.index < this.edges.length - 1 && this.edges[(this.index + 1)].contains(target.u)) || (this.index > 0 && this.edges[(this.index - 1)].contains(target.v))) {
 		begin = target.v;
 		end = target.u;
 	} else {

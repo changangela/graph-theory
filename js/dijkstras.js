@@ -26,7 +26,6 @@ Dijkstras.prototype.solve = function() {
 
 
 		const graph = this.graph.cloneWeighted();
-		console.log(graph);
 
 		// set each nodes position to infinity and parent to null
 		let distance = [], parent = [], unexplored = new Set();
@@ -53,19 +52,19 @@ Dijkstras.prototype.solve = function() {
 			}
 		}
 
-		let edges = [], temp = this.graph.idToIndex(this.dest.id);
-		while (parent[temp] != null) {
-			const u = this.graph.vertices[temp], v = this.graph.vertices[parent[temp]];
-			u.color = GRAPH_COLORS.CYCLE;
-			v.color = GRAPH_COLORS.CYCLE;
-			edges.unshift(this.graph.getEdge(u, v));
+		let vertices = [], temp = this.graph.idToIndex(this.dest.id);
+		
+		while (temp != null) {
+			const u = this.graph.vertices[temp];
+			u.color = GRAPH_COLORS.RED;
+			vertices.unshift(u);
 			temp = parent[temp];
 		}
 
-		this.src.color = GRAPH_COLORS.ACTIVE;
-		this.dest.color = GRAPH_COLORS.RED;
+		this.src.color = GRAPH_COLORS.SOURCE;
+		this.dest.color = GRAPH_COLORS.DESTINATION;
 
-		this.graph.setCircuit(new Circuit(edges));
+		this.graph.setCircuit(new Path(vertices, this.graph));
 	}
 
 }

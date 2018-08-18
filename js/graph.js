@@ -15,6 +15,8 @@ const GRAPH_COLORS = {
 	CYCLE: '#ccffff',
 	NORMAL: '#ccccff',
 	ACTIVE: '#ccffcc',
+	SOURCE: '#ffffcc',
+	DESTINATION: '#ffcc99',
 }
 
 function Graph() {
