@@ -123,7 +123,15 @@ GraphController.prototype.weighted = function() {
 GraphController.prototype.setWeight = function() {
     const target = this.graph.activeEdge();
 	if (target != null) {
-    	const weight = prompt("Edge weight?", target.weight); 
-		target.setWeight(weight);
+    	const weight = prompt("Edge weight?", target.weight);
+		target.setWeight(parseInt(weight));
+	}
+}
+
+GraphController.prototype.dijkstras = function(x, y) {
+	const target = this.selectVertex(x, y);
+	const active = this.graph.activeVertex();
+	if (target != null && active != null && target != active) {
+		this.graph.dijkstras(target, active);
 	}
 }

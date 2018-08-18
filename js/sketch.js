@@ -14,6 +14,7 @@ const KEY_MAPPING = {
     COLORING: 67, // 'c'
     MST: 77, //'m'
     WEIGHTED: 87, // 'w'
+    DIJKSTRAS: 115, // 's'
 }
 
 let graph = new Graph();
@@ -109,7 +110,6 @@ function keyPressed() {
     		graphController.setWeight();
     	}
     }
-
 }
 
 function mousePressed() {
@@ -117,13 +117,19 @@ function mousePressed() {
 		graphController.normal();
 	}
 	
-	if (keyIsPressed && keyCode == SHIFT) {
-		const target = graphController.addEdge(mouseX, mouseY);
-		graphController.disableVertices(null);
-		graphController.disableEdges(null);
-		
-		if (target != null) {
-			target.toggle();
+	if (keyIsPressed) {
+		if (keyCode == SHIFT) {
+			const target = graphController.addEdge(mouseX, mouseY);
+			graphController.disableVertices(null);
+			graphController.disableEdges(null);
+			
+			if (target != null) {
+				target.toggle();
+			}
+		} else if (keyCode == KEY_MAPPING.DIJKSTRAS) {
+			if (graph.weighted){
+				graphController.dijkstras(mouseX, mouseY);
+			}
 		}
 	
 	} else {

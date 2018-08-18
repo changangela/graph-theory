@@ -1,20 +1,22 @@
 const GRAPH_MODE = {
-        NORMAL: 'BUILDER',
-        BIPARTITE: 'BIPARTITE',
-        DEGREES: 'DEGREES',
-        EULERIAN: 'EULERIAN CYCLE',
-        COLORING: 'COLORING',
-        MST: 'MINIMUM SPANNING TREE',
+	NORMAL: 'BUILDER',
+	BIPARTITE: 'BIPARTITE',
+	DEGREES: 'DEGREES',
+    EULERIAN: 'EULERIAN CYCLE',
+    COLORING: 'COLORING',
+    DIJKSTRAS: 'DIJKSTRAS',
 }
 
 const GRAPH_COLORS = {
-        YELLOW: '#ffffcc',
-        PINK: '#ffccff',
-        RED: '#ffcccc',
-        INVALID: '#cccccc',
-        CYCLE: '#ccffff',
-        NORMAL: '#ccccff',
-        ACTIVE: '#ccffcc',
+	YELLOW: '#ffffcc',
+	PINK: '#ffccff',
+	RED: '#ffcccc',
+	INVALID: '#cccccc',
+	CYCLE: '#ccffff',
+	NORMAL: '#ccccff',
+	ACTIVE: '#ccffcc',
+	SOURCE: '#ffffcc',
+	DESTINATION: '#ffcc99',
 }
 
 function Graph() {
@@ -199,13 +201,30 @@ Graph.prototype.clone = function () {
         return graph;
 }
 
-Graph.prototype.idToIndex = function (id) {
-        for (let i = 0; i < this.vertices.length; ++i) {
-                if (this.vertices[i].id == id) {
-                        return i;
-                }
-        }
-        return null;
+Graph.prototype.cloneWeighted = function() {
+	let idMap = {}, graph = []
+
+	for (let i = 0; i < this.vertices.length; ++i) {
+		idMap[this.vertices[i].id] = i;
+	}
+
+	for (let i = 0; i < this.vertices.length; ++i) {
+		graph.push([]);
+		for (let j = 0; j < this.vertices[i].neighbors.length; ++j) {
+			graph[i].push([idMap[this.vertices[i].neighbors[j].id], this.getEdge(this.vertices[i], this.vertices[i].neighbors[j]).weight]);
+		}
+	}
+
+	return graph;	
+}
+
+Graph.prototype.idToIndex = function(id) {
+	for (let i = 0; i < this.vertices.length; ++i) {
+		if (this.vertices[i].id == id) {
+			return i;
+		}
+	}
+	return null;
 };
 
 Graph.prototype.setColor = function (color) {
@@ -230,6 +249,29 @@ Graph.prototype.clearLabels = function () {
         }
 }
 
-Graph.prototype.toggleWeighted = function () {
-        this.weighted = !this.weighted;
+Graph.prototype.toggleWeighted = function() {
+	this.weighted = !this.weighted;
+}
+
+Graph.prototype.dijkstras = function(u, v) {
+	this.solve(GRAPH_MODE.DIJKSTRAS, new Dijkstras(this, v, u));
+}
+
+Graph.prototype.pathExists = function(u, v) {
+	let visited = new Set();
+
+	function bfs(vertex) {
+		if (visited.has(vertex)) {
+			return;
+		}
+
+		visited.add(vertex);
+
+		for (let i = 0; i < vertex.neighbors.length; ++i) {
+			bfs(vertex.neighbors[i], visited);
+		}
+	}
+
+	bfs(u);
+	return visited.has(v);
 }
