@@ -122,5 +122,18 @@ BinaryHeap.prototype = {
         //console.log('Decreasing key for element ' + id + ' from value ' + this.content[n][this.valueProp] + ' to ' + value);
         this.content[n][this.valueProp] = value;
         this.bubbleUp(n);
+    },
+    
+    decreaseKeyOrPush: function(id, value) {
+        if(this.map[this.idFunction({weight: value, vertex: id})] !== undefined) {
+            if(this.content[this.map[id.id]][this.valueProp] > value) {
+                this.decreaseKey(id.id, value);
+                return 1;
+            }
+            return 0;
+        } else {
+            this.push({weight: value, vertex: id});
+            return 1;
+        }
     }
 };

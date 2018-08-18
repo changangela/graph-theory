@@ -13,7 +13,7 @@
         <script src = "vendor/bootstrap/js/bootstrap.min.js"></script>
         <script src="vendor/p5/p5.js" type="text/javascript"></script>
     	<script src="vendor/p5/p5.speech.js" type="text/javascript"></script>
-        <script src="vendor/binaryHeap/binaryheap-decreaseKey.js" type="text/javascript"></script>
+		<script src="vendor/binary-heap/binary-heap.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<nav class = "navbar navbar-fixed-top navbar-default" role = "navigation">
@@ -50,7 +50,7 @@
 						<code>Left click</code> on canvas to create vertex. <code>Left click</code> on vertex to select and drag. To add an edge, select a source vertex, hold down <code>SHIFT</code>, and select a destination vertex. To delete a vertex or edge, select it and press <code>DELETE</code> (or <code>right click</code> on a vertex or edge). To edit the weight of an edge, select the edge and press <code>ENTER</code>. To restart, press <code>F5</code>.
 					</p>
 					<p>
-						<b>Modes</b>: builder (<code>n</code>), bipartite (<code>b</code>), degrees (<code>d</code>), eulerian (<code>e</code>), coloring (<code>c</code>), dijsktras shortest path (select source vertex, hold <code>s</code>, select destination vertex)
+						<b>Modes</b>: builder (<code>n</code>), bipartite (<code>b</code>), degrees (<code>d</code>), eulerian (<code>e</code>), coloring (<code>c</code>), dijsktras shortest path (select source vertex, hold <code>s</code>, select destination vertex), prims minimum spanning tree (<code>m</code>)
 					</p>
 					<p>
 						<b>Toggles</b>: weighted (<code>w</code>)
@@ -64,11 +64,11 @@
 			</div>
 		</div>
 		<script src="js/main.js" type="text/javascript"></script>
-		<script src="vendor/binary-heap/binary-heap.js" type="text/javascript"></script>
 		<script src="js/vertex.js" type="text/javascript"></script>
 		<script src="js/edge.js" type="text/javascript"></script>
 		<script src="js/circuit.js" type="text/javascript"></script>
 		<script src="js/path.js" type="text/javascript"></script>
+		<script src="js/tree.js" type="text/javascript"></script>
 		<script src="js/graph.js" type="text/javascript"></script>
 		<script src="js/bipartite.js" type="text/javascript"></script>
 		<script src="js/normal.js" type="text/javascript"></script>
@@ -77,7 +77,7 @@
 		<script src="js/dijkstras.js" type="text/javascript"></script>
 		<script src="js/graph_controller.js" type="text/javascript"></script>
 		<script src="js/sketch.js" type="text/javascript"></script>
-                <script src="js/mstPrim.js" type="text/javascript"></script>
+        <script src="js/mst_prim.js" type="text/javascript"></script>
         <script src="js/eulerian.js" type="text/javascript"></script>
 	</body>
 

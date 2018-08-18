@@ -101,7 +101,7 @@ function keyPressed() {
     } else if (keyCode == KEY_MAPPING.COLORING) {
     	graphController.coloring();
     } else if (keyCode == KEY_MAPPING.MST) {
-        graphController.mst();
+    	graphController.mst();
     }
     else if (keyCode == KEY_MAPPING.WEIGHTED) {
     	graphController.weighted();

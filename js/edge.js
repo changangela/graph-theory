@@ -4,6 +4,7 @@ const EDGE_COLORS = {
 	CIRCUIT: '#ccccff',
 	ELECTRON: '#ffffcc',
 	PATH: '#ffcccc',
+	TREE: '#99ff99',
 }
 
 function Edge(u, v) {

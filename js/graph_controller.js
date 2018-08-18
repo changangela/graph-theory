@@ -33,17 +33,25 @@ GraphController.prototype.selectedEdge = function(x, y) {
 	    return delta < epsilon && (px >= Math.min(ux, vx) - VERTEX_RADIUS / 2 && px <= Math.max(ux, vx) + VERTEX_RADIUS / 2);
 	}
 
+	function distance(ux, uy, vx, vy, px, py) {
+		return Math.abs((py - uy)  * (vx - ux) - (vy - uy) * (px - ux));
+	}
 
-	let minDistance = Number.MAX_SAFE_INTEGER;
+
+	let minDistance = Number.MAX_SAFE_INTEGER, target = null;
 
 	for (let i = 0; i < this.graph.edges.length; ++i) {
 		 const edge = this.graph.edges[i];
 		 if (isOnSegment(edge.u.x, edge.u.y, edge.v.x, edge.v.y, x, y)) {
-		 	return edge;
+		 	const dist = distance(edge.u.x, edge.u.y, edge.v.x, edge.v.y, x, y);
+		 	if (dist < minDistance) {
+		 		minDistance = dist;
+		 		target = edge;
+		 	}
 		 }
 	}
 
-	return null;
+	return target;
 }
 
 GraphController.prototype.disableVertices = function(target) {
@@ -123,8 +131,10 @@ GraphController.prototype.weighted = function() {
 GraphController.prototype.setWeight = function() {
     const target = this.graph.activeEdge();
 	if (target != null) {
-    	const weight = prompt("Edge weight?", target.weight);
-		target.setWeight(parseInt(weight));
+    	const weight = parseInt(prompt("Edge weight?", target.weight));
+    	if (!isNaN(weight)) {
+			target.setWeight(parseInt(weight));
+    	}
 	}
 }
 
