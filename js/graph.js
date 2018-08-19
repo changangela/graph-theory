@@ -205,20 +205,20 @@ Graph.prototype.clone = function () {
 }
 
 Graph.prototype.cloneWeighted = function() {
-let idMap = {}, graph = []
+    let idMap = {}, graph = []
 
-for (let i = 0; i < this.vertices.length; ++i) {
-	idMap[this.vertices[i].id] = i;
-}
+    for (let i = 0; i < this.vertices.length; ++i) {
+    	idMap[this.vertices[i].id] = i;
+    }
 
-for (let i = 0; i < this.vertices.length; ++i) {
-	graph.push([]);
-	for (let j = 0; j < this.vertices[i].neighbors.length; ++j) {
-		graph[i].push([idMap[this.vertices[i].neighbors[j].id], this.getEdge(this.vertices[i], this.vertices[i].neighbors[j]).weight]);
-	}
-}
+    for (let i = 0; i < this.vertices.length; ++i) {
+    	graph.push([]);
+    	for (let j = 0; j < this.vertices[i].neighbors.length; ++j) {
+    		graph[i].push([idMap[this.vertices[i].neighbors[j].id], this.getEdge(this.vertices[i], this.vertices[i].neighbors[j]).weight]);
+    	}
+    }
 
-return graph;	
+    return graph;
 }
 
 Graph.prototype.idToIndex = function(id) {
@@ -234,7 +234,7 @@ Graph.prototype.setColor = function (color) {
     for (let i = 0; i < this.vertices.length; ++i) {
             this.vertices[i].color = color;
     }
-}
+};
 
 Graph.prototype.solve = function (mode, solver) {
     this.mode = mode;
@@ -246,17 +246,16 @@ Graph.prototype.solve = function (mode, solver) {
     this.setColor(GRAPH_COLORS.NORMAL);
 
     solver.solve();
-}
+};
 
-Graph.prototype.existsLabels = function() {
+Graph.prototype.existLabels = function() {
     for (let i = 0; i < this.vertices.length; ++i) {
         if (this.vertices[i].label != null) {
             return true;
         }
     } 
     return false;
-}
-
+};
 
 Graph.prototype.clearLabels = function () {
     for (let i = 0; i < this.vertices.length; ++i) {
@@ -266,6 +265,10 @@ Graph.prototype.clearLabels = function () {
 
 Graph.prototype.toggleWeighted = function() {
 	this.weighted = !this.weighted;
+}
+
+Graph.prototype.toggleLabels = function() {
+    this.labels = !this.labels;
 }
 
 Graph.prototype.dijkstras = function(u, v) {

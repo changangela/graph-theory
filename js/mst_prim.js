@@ -28,12 +28,12 @@ MstPrim.prototype.solve = function () {
         let vertex = pq.pop().vertex;
         inMst.add(vertex.id);
         for (let i = 0; i < vertex.neighbors.length; ++i) {
-                if (!inMst.has(vertex.neighbors[i].id)) {
-                        let updateParent = pq.decreaseKeyOrPush(vertex.neighbors[i], parseInt(this.graph.getEdge(vertex, vertex.neighbors[i]).weight));
-                        if (updateParent == 1) {
-                                parent.set(vertex.neighbors[i], vertex);
-                        }
+            if (!inMst.has(vertex.neighbors[i].id)) {
+                let updateParent = pq.decreaseKeyOrPush(vertex.neighbors[i], parseInt(this.graph.getEdge(vertex, vertex.neighbors[i]).weight));
+                if (updateParent == 1) {
+                        parent.set(vertex.neighbors[i], vertex);
                 }
+            }
         }
     }
     
