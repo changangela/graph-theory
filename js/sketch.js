@@ -16,6 +16,7 @@ const KEY_MAPPING = {
     WEIGHTED: 87, // 'w'
     DIJKSTRAS: 115, // 's'
     LABELS: 76, // 'l'
+    HAMILTONIAN: 72, // 'h'
 }
 
 let graph = new Graph();
@@ -125,6 +126,8 @@ function keyPressed() {
 		}
 	} else if (keyCode == KEY_MAPPING.LABELS) {
 		graphController.labels();
+	} else if (keyCode == KEY_MAPPING.HAMILTONIAN) {
+		graphController.hamiltonian();
 	}
 }
 

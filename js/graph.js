@@ -5,7 +5,8 @@ const GRAPH_MODE = {
     EULERIAN: 'EULERIAN CYCLE',
     COLORING: 'COLORING',
     DIJKSTRAS: 'DIJKSTRAS',
-    MST: 'MST',
+    MST: 'MINIMUM SPANNING TREE',
+    HAMILTONIAN: 'HAMILTONIAN',
 }
 
 const GRAPH_COLORS = {
@@ -55,16 +56,16 @@ Graph.prototype.getEdge = function (u, v) {
 Graph.prototype.removeVertex = function (vertex) {
     for (let i = this.vertices.length - 1; i >= 0; i--) {
         if (this.vertices[i] == vertex) {
-                this.vertices.splice(i, 1);
+            this.vertices.splice(i, 1);
         } else {
-                this.vertices[i].removeNeighbor(vertex);
+            this.vertices[i].removeNeighbor(vertex);
         }
     }
 
     // remove edges that contain this vertex
     for (let i = this.edges.length - 1; i >= 0; i--) {
         if (this.edges[i].contains(vertex)) {
-                this.edges.splice(i, 1);
+            this.edges.splice(i, 1);
         }
     }
 }
@@ -72,7 +73,7 @@ Graph.prototype.removeVertex = function (vertex) {
 Graph.prototype.removeEdge = function (edge) {
     for (let i = this.edges.length - 1; i >= 0; --i) {
         if (this.edges[i] == edge) {
-                this.edges.splice(i, 1);
+            this.edges.splice(i, 1);
         }
     }
 
@@ -155,7 +156,7 @@ Graph.prototype.components = function () {
 
     function bfs(vertex, visited) {
         if (visited.has(vertex)) {
-                return;
+            return;
         }
 
         visited.add(vertex);
@@ -232,7 +233,7 @@ Graph.prototype.idToIndex = function(id) {
 
 Graph.prototype.setColor = function (color) {
     for (let i = 0; i < this.vertices.length; ++i) {
-            this.vertices[i].color = color;
+        this.vertices[i].color = color;
     }
 };
 
@@ -292,4 +293,8 @@ Graph.prototype.pathExists = function(u, v) {
 
 	bfs(u);
 	return visited.has(v);
+}
+
+Graph.prototype.hamiltonian = function() {
+    this.solve(GRAPH_MODE.HAMILTONIAN, new Hamiltonian(this));
 }

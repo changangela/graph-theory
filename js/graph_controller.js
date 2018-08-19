@@ -149,3 +149,7 @@ GraphController.prototype.dijkstras = function(x, y) {
 		this.graph.dijkstras(target, active);
 	}
 }
+
+GraphController.prototype.hamiltonian = function() {
+	this.graph.hamiltonian();
+}
